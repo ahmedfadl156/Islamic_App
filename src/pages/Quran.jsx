@@ -1,0 +1,260 @@
+import { useEffect, useState } from "react"
+import Navbar from "../components/Navbar"
+import { getQuran, getSurah } from "../services/getQuran"
+import { IoMdPlay, IoMdPause } from "react-icons/io";
+
+function Quran() {
+  const [quranData , setQuranData] = useState([]);
+  const [originalData, setOriginalData] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedSura, setSelectedSura] = useState(null);
+  const [surahData, setSurahData] = useState(null);
+  const [fullSurahAudio, setFullSurahAudio] = useState(null);
+  const [isPlayingFull, setIsPlayingFull] = useState(false);
+  const [currentSurahNumber, setCurrentSurahNumber] = useState(null);
+  
+  function searchSurahs(query) {
+    setSearchQuery(query);
+    if (!query) {
+      setQuranData(originalData);
+    } else {
+      const filteredSurahs = originalData.filter((sura) => {
+        const normalizeArabic = (text) => text.replace(/[\u064B-\u0652]/g, '').trim();
+        const normalizedSuraName = normalizeArabic(sura.name);
+        const normalizedQuery = normalizeArabic(query);
+        
+        return normalizedSuraName.includes(normalizedQuery) || 
+        sura.englishName.toLowerCase().includes(query.toLowerCase()) || 
+        sura.englishNameTranslation.toLowerCase().includes(query.toLowerCase())
+        || sura.number.toString().includes(query);
+      });
+      setQuranData(filteredSurahs);
+    }
+  }
+
+  function playFullSurah() {
+    if (fullSurahAudio && currentSurahNumber === selectedSura?.number) {
+      if (isPlayingFull) {
+        fullSurahAudio.pause();
+        setIsPlayingFull(false);
+      } else {
+        fullSurahAudio.play();
+        setIsPlayingFull(true);
+      }
+      return;
+    }
+
+    if (fullSurahAudio) {
+      fullSurahAudio.pause();
+      fullSurahAudio.currentTime = 0;
+      fullSurahAudio.src = '';
+      setFullSurahAudio(null);
+      setIsPlayingFull(false);
+      setCurrentSurahNumber(null);
+    }
+
+    const audioUrl = `https://download.quranicaudio.com/quran/mishaari_raashid_al_3afaasee/${Number(selectedSura?.number).toString().padStart(3, '0')}.mp3`;
+    const audio = new Audio(audioUrl);
+    
+    audio.addEventListener('loadstart', () => {
+      console.log('بدء تحميل السورة...');
+    });
+    
+    audio.addEventListener('canplay', () => {
+      audio.play();
+      setIsPlayingFull(true);
+      setCurrentSurahNumber(selectedSura?.number);
+    });
+    
+    audio.addEventListener('ended', () => {
+      setIsPlayingFull(false);
+      setCurrentSurahNumber(null);
+    });
+    
+    audio.addEventListener('error', (e) => {
+      console.error('خطأ في تشغيل السورة:', e);
+      setIsPlayingFull(false);
+      setCurrentSurahNumber(null);
+    });
+    
+    setFullSurahAudio(audio);
+  }
+
+  function handleSurahSelection(sura) {
+    if (fullSurahAudio) {
+      fullSurahAudio.pause();
+      fullSurahAudio.currentTime = 0;
+      fullSurahAudio.src = '';
+      setFullSurahAudio(null);
+      setIsPlayingFull(false);
+      setCurrentSurahNumber(null);
+    }
+    setSelectedSura(sura);
+  }
+
+  useEffect(() => {
+    async function fetchSurah(){
+      if (selectedSura?.number) {
+        const surah = await getSurah(selectedSura?.number);
+        setSurahData(surah.data.ayahs);
+        setSelectedSura(prev => ({
+          ...prev,
+          edition: surah.data.edition
+        }));
+      }
+    }
+    fetchSurah();
+  }, [selectedSura?.number]);
+
+  useEffect(() => {
+    async function fetchQuranData(){
+      const data = await getQuran();
+      setQuranData(data);
+      setOriginalData(data);
+    }
+    fetchQuranData();
+  }, []);
+
+  return (
+    <div className="bg-gradient-to-br from-emerald-50 to-teal-50 min-h-screen">
+      <Navbar />
+      <div className="flex flex-col items-center justify-center gap-6 mx-auto max-w-6xl py-20 px-8">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold">القرآن الكريم</h1>
+        <p className="text-xl font-semibold text-gray-500">اقرا و استمع واستمتع بأيات الله</p>
+      </div>
+      <section className="main-section mx-auto flex flex-col lg:flex-row justify-center items-center w-full lg:max-w-6xl gap-4 px-8">
+        <div className="left lg:w-[40%] w-full h-full bg-white shadow-lg p-6 rounded-lg">
+          <h1 className="text-2xl font-bold">سور القران كاملة</h1>
+          <form>
+            <input type="text" placeholder="ابحث عن سورة" className="border border-gray-300 rounded-lg w-full px-4 py-2 mt-4 outline-none" value={searchQuery} onChange={(e) => searchSurahs(e.target.value)}/>
+          </form>
+          <ul className="mt-4 overflow-scroll h-[80vh] custom-scrollbar">
+            {quranData.map((sura) => 
+            <li onClick={() => handleSurahSelection(sura)} className={`border-t border-gray-300 p-4 cursor-pointer hover:bg-gray-50 ${selectedSura?.number === sura.number ? 'bg-emerald-100 border-emerald-300' : 'bg-white'} flex justify-between items-center`} key={sura.number}>
+              <div className="flex flex-col gap-2">
+              {sura.name}
+              <span className="text-gray-500">{sura.ayahs.length} ايات</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="flex flex-col text-left">
+                <span className="text-gray-500">{sura.englishName}</span>
+                <p className="text-gray-500">{sura.englishNameTranslation}</p>
+                </div>
+                <span className="bg-emerald-100 text-emerald-600 w-8 h-8 flex items-center justify-center rounded-full">{sura.number}</span>
+              </div>
+            </li>
+            )}
+          </ul>
+        </div>
+        <div className="right lg:w-[60%] w-full bg-white shadow-lg rounded-lg h-[100vh] overflow-hidden flex flex-col">
+          {selectedSura ? (
+            <>
+              <div className="sticky top-0 bg-white border-b border-gray-200 p-6 z-10">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-4">
+                    <span className="bg-emerald-500 text-white w-12 h-12 flex items-center justify-center rounded-full text-lg font-bold">
+                      {selectedSura.number}
+                    </span>
+                    <div>
+                      <h1 className="text-3xl font-bold text-gray-800">{selectedSura.name}</h1>
+                      <p className="text-emerald-600 font-semibold">{selectedSura.englishName}</p>
+                      <p className="text-gray-500 text-sm">{selectedSura.englishNameTranslation}</p>
+                    </div>
+                  </div>
+                  <div className="text-right text-sm text-gray-500">
+                    <p>{selectedSura.revelationType}</p>
+                    <p>{surahData?.length} آيات</p>
+                  </div>
+                </div>
+                
+                <div className="flex justify-center mb-4">
+                  <button 
+                    onClick={playFullSurah}
+                    className={`group flex items-center gap-3 ${isPlayingFull ? 'bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600' : 'bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600'} text-white px-6 py-3 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300`}
+                  >
+                    <div className="relative">
+                      <div className="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                        {isPlayingFull ? (
+                          <IoMdPause className="w-5 text-red-500 group-hover:animate-pulse h-5" />
+                        ) : (
+                          <IoMdPlay className="w-5 h-5 text-emerald-500 group-hover:animate-pulse" />
+                        )}
+                      </div>
+                      <div className={`absolute -top-1 -right-1 w-3 h-3 ${isPlayingFull ? 'bg-red-400 animate-pulse' : 'bg-yellow-400 animate-ping'} rounded-full`}></div>
+                    </div>
+                    <div className="flex flex-col items-start">
+                      <span className="font-semibold text-lg">
+                        {isPlayingFull ? 'إيقاف السورة' : 'استمع للسورة كاملة'}
+                      </span>
+                      <span className="text-sm text-white text-opacity-80">بصوت الشيخ العفاسي</span>
+                    </div>
+                    <div className="flex space-x-1">
+                      <div className={`w-1 h-4 bg-white bg-opacity-60 rounded-full ${isPlayingFull ? 'animate-bounce' : 'animate-pulse'}`}></div>
+                      <div className={`w-1 h-6 bg-white bg-opacity-80 rounded-full ${isPlayingFull ? 'animate-bounce' : 'animate-pulse'}`} style={{animationDelay: '0.1s'}}></div>
+                      <div className={`w-1 h-5 bg-white bg-opacity-70 rounded-full ${isPlayingFull ? 'animate-bounce' : 'animate-pulse'}`} style={{animationDelay: '0.2s'}}></div>
+                      <div className={`w-1 h-7 bg-white bg-opacity-90 rounded-full ${isPlayingFull ? 'animate-bounce' : 'animate-pulse'}`} style={{animationDelay: '0.3s'}}></div>
+                    </div>
+                  </button>
+                </div>
+              </div>
+              
+              <div className="flex-1 overflow-y-auto p-3 lg:p-6 space-y-4 lg:space-y-6 surah-content-scrollbar">
+                {surahData?.map((ayah, index) => (
+                  <div key={ayah.number} className="group">
+                    <div className="flex items-start gap-3 lg:gap-4 p-3 lg:p-4 rounded-lg hover:bg-gray-50 transition-colors">
+                      <span className="bg-emerald-100 text-emerald-700 w-7 h-7 lg:w-8 lg:h-8 flex items-center justify-center rounded-full text-xs lg:text-sm font-semibold flex-shrink-0 mt-1">
+                        {ayah.numberInSurah}
+                      </span>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xl lg:text-2xl font-semibold leading-relaxed text-gray-800 font-arabic mb-3 lg:mb-4" style={{fontFamily: 'Amiri, serif', lineHeight: '2.2'}}>
+                          {ayah.text}
+                        </p>
+                        {ayah.audio && (
+                          <div className="p-3 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-lg border border-emerald-100">
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-3">
+                              <div className="flex items-center gap-2">
+                                <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                                <span className="text-sm font-medium text-emerald-700">استمع للآية</span>
+                              </div>
+                              <span className="text-xs text-emerald-600 bg-emerald-100 px-2 py-1 rounded-full">
+                                {selectedSura?.edition?.name || 'مشاري العفاسي'}
+                              </span>
+                            </div>
+                            <audio 
+                              controls 
+                              className="w-full h-8 lg:h-10 rounded-lg"
+                              style={{
+                                filter: 'sepia(20%) saturate(70%) hue-rotate(88deg) brightness(100%) contrast(119%)'
+                              }}
+                            >
+                              <source src={ayah.audio} type="audio/mpeg" />
+                              متصفحك لا يدعم تشغيل الصوت
+                            </audio>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          ) : (
+            <div className="flex items-center justify-center h-full text-gray-500">
+              <div className="text-center">
+                <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold text-gray-600 mb-2">اختر سورة للقراءة</h3>
+                <p className="text-sm text-gray-500">اضغط على أي سورة من القائمة لعرض آياتها</p>
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+    </div>
+  )
+}
+
+export default Quran
