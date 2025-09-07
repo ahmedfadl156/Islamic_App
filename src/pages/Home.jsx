@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom"
 import ZakrniCard from "../components/ZakrniCard"
+import SectionsCards from "../components/SectionsCards"
 
 function Home() {
   return (
@@ -23,6 +24,7 @@ function Home() {
         </div>
       </div>
       <ZakrniCard />
+      <SectionsCards />
     </>
   )
 }

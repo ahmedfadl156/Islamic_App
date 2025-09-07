@@ -3,6 +3,7 @@ import { useState } from "react"
 import { HiOutlineHome } from "react-icons/hi";
 import { HiOutlineCalendar } from "react-icons/hi";
 import { HiBookOpen } from "react-icons/hi";
+import { LuBookOpenText } from "react-icons/lu";
 
 function Navbar() {
   const location = useLocation();
@@ -23,6 +24,11 @@ function Navbar() {
       path: "/quran",
       icon: HiBookOpen,
       label: "القرآن"
+    },
+    {
+      path: "/azkar",
+      icon: LuBookOpenText,
+      label: "الأذكار"
     }
   ];
 

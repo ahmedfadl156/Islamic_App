@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react"
 import Navbar from "../components/Navbar"
-import { getQuran, getSurah } from "../services/getQuran"
+import { getQuran, getSurah, getTafsir } from "../services/getQuran"
 import { IoMdPlay, IoMdPause } from "react-icons/io";
+import SkeletonLoader from "../components/SkeletonLoader";
+import SurahData from "../components/SurahData";
+import TafsirModal from "../components/TafsirModal";
+import Footer from "../components/Footer";
 
 function Quran() {
   const [quranData , setQuranData] = useState([]);
@@ -12,6 +16,11 @@ function Quran() {
   const [fullSurahAudio, setFullSurahAudio] = useState(null);
   const [isPlayingFull, setIsPlayingFull] = useState(false);
   const [currentSurahNumber, setCurrentSurahNumber] = useState(null);
+  const [isLoadingSurah, setIsLoadingSurah] = useState(false);
+  const [isTafsirModalOpen, setIsTafsirModalOpen] = useState(false);
+  const [tafsirData, setTafsirData] = useState(null);
+  const [currentAyahNumber, setCurrentAyahNumber] = useState(null);
+  const [selectedTafsirId, setSelectedTafsirId] = useState(14); 
   
   function searchSurahs(query) {
     setSearchQuery(query);
@@ -90,17 +99,70 @@ function Quran() {
       setCurrentSurahNumber(null);
     }
     setSelectedSura(sura);
+    setIsLoadingSurah(true);
+  }
+
+  async function handleTafsirClick(ayahNumber) {
+    setCurrentAyahNumber(ayahNumber);
+    setIsTafsirModalOpen(true);
+    setTafsirData(null); 
+    
+    await fetchTafsirData(ayahNumber, selectedTafsirId);
+  }
+
+  async function fetchTafsirData(ayahNumber, tafsirId) {
+    try {
+      const tafsir = await getTafsir(ayahNumber, tafsirId);
+      
+      const currentAyah = surahData?.find(ayah => ayah.number === ayahNumber);
+      
+      const formattedTafsir = {
+        ayah: currentAyah?.text || '',
+        text: tafsir?.tafsir?.text || tafsir?.text || 'لا يوجد تفسير متاح لهذه الآية حالياً',
+        source: tafsir?.tafsir?.resource_name || tafsir?.resource_name || 'تفسير ابن كثير'
+      };
+      
+      setTafsirData(formattedTafsir);
+    } catch (error) {
+      console.error('Error fetching tafsir:', error);
+      setTafsirData({
+        ayah: surahData?.find(ayah => ayah.number === ayahNumber)?.text || '',
+        text: 'حدث خطأ في تحميل التفسير. يرجى المحاولة مرة أخرى.',
+        source: 'خطأ في التحميل'
+      });
+    }
+  }
+
+  function handleTafsirSourceChange(tafsirId) {
+    setSelectedTafsirId(tafsirId);
+    if (currentAyahNumber) {
+      setTafsirData(null); 
+      fetchTafsirData(currentAyahNumber, tafsirId);
+    }
+  }
+
+  function closeTafsirModal() {
+    setIsTafsirModalOpen(false);
+    setTafsirData(null);
+    setCurrentAyahNumber(null);
   }
 
   useEffect(() => {
     async function fetchSurah(){
       if (selectedSura?.number) {
-        const surah = await getSurah(selectedSura?.number);
-        setSurahData(surah.data.ayahs);
-        setSelectedSura(prev => ({
-          ...prev,
-          edition: surah.data.edition
-        }));
+        setIsLoadingSurah(true);
+        try {
+          const surah = await getSurah(selectedSura?.number);
+          setSurahData(surah.data.ayahs);
+          setSelectedSura(prev => ({
+            ...prev,
+            edition: surah.data.edition
+          }));
+        } catch (error) {
+          console.error('Error fetching surah:', error);
+        } finally {
+          setIsLoadingSurah(false);
+        }
       }
     }
     fetchSurah();
@@ -199,43 +261,11 @@ function Quran() {
               </div>
               
               <div className="flex-1 overflow-y-auto p-3 lg:p-6 space-y-4 lg:space-y-6 surah-content-scrollbar">
-                {surahData?.map((ayah, index) => (
-                  <div key={ayah.number} className="group">
-                    <div className="flex items-start gap-3 lg:gap-4 p-3 lg:p-4 rounded-lg hover:bg-gray-50 transition-colors">
-                      <span className="bg-emerald-100 text-emerald-700 w-7 h-7 lg:w-8 lg:h-8 flex items-center justify-center rounded-full text-xs lg:text-sm font-semibold flex-shrink-0 mt-1">
-                        {ayah.numberInSurah}
-                      </span>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xl lg:text-2xl font-semibold leading-relaxed text-gray-800 font-arabic mb-3 lg:mb-4" style={{fontFamily: 'Amiri, serif', lineHeight: '2.2'}}>
-                          {ayah.text}
-                        </p>
-                        {ayah.audio && (
-                          <div className="p-3 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-lg border border-emerald-100">
-                            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-3">
-                              <div className="flex items-center gap-2">
-                                <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-                                <span className="text-sm font-medium text-emerald-700">استمع للآية</span>
-                              </div>
-                              <span className="text-xs text-emerald-600 bg-emerald-100 px-2 py-1 rounded-full">
-                                {selectedSura?.edition?.name || 'مشاري العفاسي'}
-                              </span>
-                            </div>
-                            <audio 
-                              controls 
-                              className="w-full h-8 lg:h-10 rounded-lg"
-                              style={{
-                                filter: 'sepia(20%) saturate(70%) hue-rotate(88deg) brightness(100%) contrast(119%)'
-                              }}
-                            >
-                              <source src={ayah.audio} type="audio/mpeg" />
-                              متصفحك لا يدعم تشغيل الصوت
-                            </audio>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
+                {isLoadingSurah ? (
+                  <SkeletonLoader />
+                ) : (
+                  <SurahData surahData={surahData} selectedSura={selectedSura} handleTafsirClick={handleTafsirClick}/>
+                )}
               </div>
             </>
           ) : (
@@ -253,6 +283,15 @@ function Quran() {
           )}
         </div>
       </section>
+      
+      <TafsirModal 
+        isOpen={isTafsirModalOpen}
+        onClose={closeTafsirModal}
+        tafsirData={tafsirData}
+        ayahNumber={currentAyahNumber}
+        onTafsirChange={handleTafsirSourceChange}
+      />
+      <Footer />
     </div>
   )
 }

@@ -22,3 +22,54 @@ export async function getSurah(number){
   const surah = await res.json();
   return surah;
 }
+
+export async function getTafsir(ayahNumber, tafsirId = 14){
+  const res = await fetch(`https://api.quran.com/api/v4/tafsirs/${tafsirId}/by_ayah/${ayahNumber}`);
+  const tafsir = await res.json();
+  return tafsir;
+}
+
+export const tafsirSources = [
+  {
+    id: 14,
+    name: 'تفسير ابن كثير',
+    slug: 'ar-tafsir-ibn-kathir',
+    description: 'من أشهر وأوثق التفاسير عند المسلمين'
+  },
+  {
+    id: 15,
+    name: 'تفسير الطبري',
+    slug: 'ar-tafsir-al-tabari',
+    description: 'مرجع أساسي وكلاسيكي في التفسير بالمأثور'
+  },
+  {
+    id: 90,
+    name: 'تفسير القرطبي',
+    slug: 'ar-tafseer-al-qurtubi',
+    description: 'تركيزه على الأحكام الفقهية مع التفسير'
+  },
+  {
+    id: 91,
+    name: 'تفسير السعدي',
+    slug: 'ar-tafseer-al-saddi',
+    description: 'مبسط وواضح، مناسب للقراءة اليومية'
+  },
+  {
+    id: 94,
+    name: 'تفسير البغوي',
+    slug: 'ar-tafsir-al-baghawi',
+    description: 'وسط بين الاختصار والتفصيل'
+  },
+  {
+    id: 16,
+    name: 'التفسير الميسر',
+    slug: 'ar-tafsir-muyassar',
+    description: 'مبسط جدًا، مناسب للمبتدئين أو الاستخدام السريع'
+  },
+  {
+    id: 93,
+    name: 'التفسير الوسيط (طنطاوي)',
+    slug: 'ar-tafsir-al-wasit',
+    description: 'معاصر ولغة سهلة'
+  }
+];

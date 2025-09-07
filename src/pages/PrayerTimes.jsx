@@ -5,6 +5,7 @@ import { IoLocationOutline } from "react-icons/io5";
 import { getLocation } from "../services/getLocation";
 import { reverseGeocode } from "../services/reverseGeocode";
 import { FaClock, FaMosque } from "react-icons/fa";
+import Footer from "../components/Footer";
 
 function PrayerTimes() {
   const [data, setData] = useState(null);
@@ -368,6 +369,7 @@ function PrayerTimes() {
           </div>
         </div>
       )}
+    <Footer />
     </div>
   )
 }
