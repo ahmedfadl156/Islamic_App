@@ -17,6 +17,7 @@ function Quran() {
   const [isPlayingFull, setIsPlayingFull] = useState(false);
   const [currentSurahNumber, setCurrentSurahNumber] = useState(null);
   const [isLoadingSurah, setIsLoadingSurah] = useState(false);
+  const [isLoadingQuranData, setIsLoadingQuranData] = useState(true);
   const [isTafsirModalOpen, setIsTafsirModalOpen] = useState(false);
   const [tafsirData, setTafsirData] = useState(null);
   const [currentAyahNumber, setCurrentAyahNumber] = useState(null);
@@ -170,9 +171,16 @@ function Quran() {
 
   useEffect(() => {
     async function fetchQuranData(){
-      const data = await getQuran();
-      setQuranData(data);
-      setOriginalData(data);
+      setIsLoadingQuranData(true);
+      try {
+        const data = await getQuran();
+        setQuranData(data);
+        setOriginalData(data);
+      } catch (error) {
+        console.error('Error fetching Quran data:', error);
+      } finally {
+        setIsLoadingQuranData(false);
+      }
     }
     fetchQuranData();
   }, []);
@@ -191,20 +199,40 @@ function Quran() {
             <input type="text" placeholder="ابحث عن سورة" className="border border-gray-300 rounded-lg w-full px-4 py-2 mt-4 outline-none" value={searchQuery} onChange={(e) => searchSurahs(e.target.value)}/>
           </form>
           <ul className="mt-4 overflow-scroll h-[80vh] custom-scrollbar">
-            {quranData.map((sura) => 
-            <li onClick={() => handleSurahSelection(sura)} className={`border-t border-gray-300 p-4 cursor-pointer hover:bg-gray-50 ${selectedSura?.number === sura.number ? 'bg-emerald-100 border-emerald-300' : 'bg-white'} flex justify-between items-center`} key={sura.number}>
-              <div className="flex flex-col gap-2">
-              {sura.name}
-              <span className="text-gray-500">{sura.ayahs.length} ايات</span>
+            {isLoadingQuranData ? (
+              <div className="flex flex-col gap-4 p-4">
+                {[...Array(10)].map((_, index) => (
+                  <div key={index} className="border-t border-gray-300 p-4 flex justify-between items-center animate-pulse">
+                    <div className="flex flex-col gap-2">
+                      <div className="h-6 bg-gray-200 rounded w-32"></div>
+                      <div className="h-4 bg-gray-200 rounded w-20"></div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="flex flex-col text-left gap-1">
+                        <div className="h-4 bg-gray-200 rounded w-24"></div>
+                        <div className="h-4 bg-gray-200 rounded w-28"></div>
+                      </div>
+                      <div className="bg-gray-200 w-8 h-8 rounded-full"></div>
+                    </div>
+                  </div>
+                ))}
               </div>
-              <div className="flex items-center gap-2">
-                <div className="flex flex-col text-left">
-                <span className="text-gray-500">{sura.englishName}</span>
-                <p className="text-gray-500">{sura.englishNameTranslation}</p>
+            ) : (
+              quranData.map((sura) => 
+              <li onClick={() => handleSurahSelection(sura)} className={`border-t border-gray-300 p-4 cursor-pointer hover:bg-gray-50 ${selectedSura?.number === sura.number ? 'bg-emerald-100 border-emerald-300' : 'bg-white'} flex justify-between items-center`} key={sura.number}>
+                <div className="flex flex-col gap-2">
+                {sura.name}
+                <span className="text-gray-500">{sura.ayahs.length} ايات</span>
                 </div>
-                <span className="bg-emerald-100 text-emerald-600 w-8 h-8 flex items-center justify-center rounded-full">{sura.number}</span>
-              </div>
-            </li>
+                <div className="flex items-center gap-2">
+                  <div className="flex flex-col text-left">
+                  <span className="text-gray-500">{sura.englishName}</span>
+                  <p className="text-gray-500">{sura.englishNameTranslation}</p>
+                  </div>
+                  <span className="bg-emerald-100 text-emerald-600 w-8 h-8 flex items-center justify-center rounded-full">{sura.number}</span>
+                </div>
+              </li>
+              )
             )}
           </ul>
         </div>
