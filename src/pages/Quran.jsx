@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import Navbar from "../components/Navbar"
 import { getQuran, getSurah, getTafsir } from "../services/getQuran"
 import { IoMdPlay, IoMdPause } from "react-icons/io";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import SkeletonLoader from "../components/SkeletonLoader";
 import SurahData from "../components/SurahData";
 import TafsirModal from "../components/TafsirModal";
@@ -17,6 +18,7 @@ function Quran() {
   const [isPlayingFull, setIsPlayingFull] = useState(false);
   const [currentSurahNumber, setCurrentSurahNumber] = useState(null);
   const [isLoadingSurah, setIsLoadingSurah] = useState(false);
+  const [isLoadingAudio, setIsLoadingAudio] = useState(false);
   const [isLoadingQuranData, setIsLoadingQuranData] = useState(true);
   const [isTafsirModalOpen, setIsTafsirModalOpen] = useState(false);
   const [tafsirData, setTafsirData] = useState(null);
@@ -63,14 +65,19 @@ function Quran() {
       setCurrentSurahNumber(null);
     }
 
+    // Start loading state
+    setIsLoadingAudio(true);
+
     const audioUrl = `https://download.quranicaudio.com/quran/mishaari_raashid_al_3afaasee/${Number(selectedSura?.number).toString().padStart(3, '0')}.mp3`;
     const audio = new Audio(audioUrl);
     
     audio.addEventListener('loadstart', () => {
       console.log('بدء تحميل السورة...');
+      setIsLoadingAudio(true);
     });
     
     audio.addEventListener('canplay', () => {
+      setIsLoadingAudio(false);
       audio.play();
       setIsPlayingFull(true);
       setCurrentSurahNumber(selectedSura?.number);
@@ -83,6 +90,7 @@ function Quran() {
     
     audio.addEventListener('error', (e) => {
       console.error('خطأ في تشغيل السورة:', e);
+      setIsLoadingAudio(false);
       setIsPlayingFull(false);
       setCurrentSurahNumber(null);
     });
@@ -273,29 +281,54 @@ function Quran() {
                 <div className="flex justify-center mb-4">
                   <button 
                     onClick={playFullSurah}
-                    className={`group flex items-center gap-3 ${isPlayingFull ? 'bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600' : 'bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600'} text-white px-6 py-3 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300`}
+                    disabled={isLoadingAudio}
+                    className={`group flex items-center gap-3 ${
+                      isLoadingAudio 
+                        ? 'bg-gradient-to-r from-blue-500 to-indigo-500 cursor-not-allowed' 
+                        : isPlayingFull 
+                          ? 'bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600' 
+                          : 'bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600'
+                    } text-white px-6 py-3 rounded-full shadow-lg hover:shadow-xl transform ${!isLoadingAudio ? 'hover:scale-105' : ''} transition-all duration-300`}
                   >
                     <div className="relative">
                       <div className="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-                        {isPlayingFull ? (
+                        {isLoadingAudio ? (
+                          <AiOutlineLoading3Quarters className="w-5 h-5 text-blue-300 animate-spin" />
+                        ) : isPlayingFull ? (
                           <IoMdPause className="w-5 text-red-500 group-hover:animate-pulse h-5" />
                         ) : (
                           <IoMdPlay className="w-5 h-5 text-emerald-500 group-hover:animate-pulse" />
                         )}
                       </div>
-                      <div className={`absolute -top-1 -right-1 w-3 h-3 ${isPlayingFull ? 'bg-red-400 animate-pulse' : 'bg-yellow-400 animate-ping'} rounded-full`}></div>
+                      <div className={`absolute -top-1 -right-1 w-3 h-3 ${
+                        isLoadingAudio 
+                          ? 'bg-blue-400 animate-pulse' 
+                          : isPlayingFull 
+                            ? 'bg-red-400 animate-pulse' 
+                            : 'bg-yellow-400 animate-ping'
+                      } rounded-full`}></div>
                     </div>
                     <div className="flex flex-col items-start w-full">
                       <span className="font-semibold text-sm md:text-lg">
-                        {isPlayingFull ? 'إيقاف السورة' : 'استمع للسورة كاملة'}
+                        {isLoadingAudio ? 'جاري تحميل السورة...' : isPlayingFull ? 'إيقاف السورة' : 'استمع للسورة كاملة'}
                       </span>
-                      <span className="text-sm text-white text-opacity-80">بصوت الشيخ العفاسي</span>
+                      <span className="text-sm text-white text-opacity-80">
+                        {isLoadingAudio ? 'يرجى الانتظار' : 'بصوت الشيخ العفاسي'}
+                      </span>
                     </div>
                     <div className="flex space-x-1">
-                      <div className={`w-1 h-4 bg-white bg-opacity-60 rounded-full ${isPlayingFull ? 'animate-bounce' : 'animate-pulse'}`}></div>
-                      <div className={`w-1 h-6 bg-white bg-opacity-80 rounded-full ${isPlayingFull ? 'animate-bounce' : 'animate-pulse'}`} style={{animationDelay: '0.1s'}}></div>
-                      <div className={`w-1 h-5 bg-white bg-opacity-70 rounded-full ${isPlayingFull ? 'animate-bounce' : 'animate-pulse'}`} style={{animationDelay: '0.2s'}}></div>
-                      <div className={`w-1 h-7 bg-white bg-opacity-90 rounded-full ${isPlayingFull ? 'animate-bounce' : 'animate-pulse'}`} style={{animationDelay: '0.3s'}}></div>
+                      <div className={`w-1 h-4 bg-white bg-opacity-60 rounded-full ${
+                        isLoadingAudio ? 'animate-pulse' : isPlayingFull ? 'animate-bounce' : 'animate-pulse'
+                      }`}></div>
+                      <div className={`w-1 h-6 bg-white bg-opacity-80 rounded-full ${
+                        isLoadingAudio ? 'animate-pulse' : isPlayingFull ? 'animate-bounce' : 'animate-pulse'
+                      }`} style={{animationDelay: '0.1s'}}></div>
+                      <div className={`w-1 h-5 bg-white bg-opacity-70 rounded-full ${
+                        isLoadingAudio ? 'animate-pulse' : isPlayingFull ? 'animate-bounce' : 'animate-pulse'
+                      }`} style={{animationDelay: '0.2s'}}></div>
+                      <div className={`w-1 h-7 bg-white bg-opacity-90 rounded-full ${
+                        isLoadingAudio ? 'animate-pulse' : isPlayingFull ? 'animate-bounce' : 'animate-pulse'
+                      }`} style={{animationDelay: '0.3s'}}></div>
                     </div>
                   </button>
                 </div>
