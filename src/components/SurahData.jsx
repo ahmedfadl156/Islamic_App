@@ -7,7 +7,7 @@ function SurahData({ surahData, selectedSura, handleTafsirClick }) {
             {ayah.numberInSurah}
           </span>
           <div className="flex-1 min-w-0">
-            <div className="flex items-start justify-between gap-3 mb-3 lg:mb-4">
+            <div className="flex flex-col md:flex-row items-start justify-between gap-3 mb-3 lg:mb-4">
               <p className="text-xl lg:text-2xl font-semibold leading-relaxed text-gray-800 font-arabic flex-1" style={{fontFamily: 'Amiri, serif', lineHeight: '2.2'}}>
                 {ayah.text}
               </p>

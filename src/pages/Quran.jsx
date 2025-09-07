@@ -205,7 +205,7 @@ function Quran() {
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold">القرآن الكريم</h1>
         <p className="text-xl font-semibold text-gray-500">اقرا و استمع واستمتع بأيات الله</p>
       </div>
-      <section className="main-section mx-auto flex flex-col lg:flex-row justify-center items-center w-full lg:max-w-6xl gap-4 px-8">
+      <section className="main-section mx-auto flex flex-col lg:flex-row justify-center items-center w-full lg:max-w-6xl gap-4 px-4">
         <div className="left lg:w-[40%] w-full h-full bg-white shadow-lg p-6 rounded-lg">
           <h1 className="text-2xl font-bold">سور القران كاملة</h1>
           <form>
