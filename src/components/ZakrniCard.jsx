@@ -45,7 +45,7 @@ function ZakrniCard() {
   };
 
   return (
-    <div className="relative -top-20 left-0 right-0 mx-auto z-50 bg-white/95 backdrop-blur-sm border border-emerald-100 shadow-2xl rounded-2xl p-6 w-[90%] max-w-4xl">
+    <div className="relative -top-5 md:-top-10 lg:-top-20 left-0 right-0 mx-auto z-50 bg-white/95 backdrop-blur-sm border border-emerald-100 shadow-2xl rounded-2xl p-6 w-[90%] max-w-4xl">
       {/* الهيدر */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">

@@ -185,6 +185,19 @@ function Quran() {
     fetchQuranData();
   }, []);
 
+  useEffect(() => {
+    return () => {
+      if (fullSurahAudio) {
+        fullSurahAudio.pause();
+        fullSurahAudio.currentTime = 0;
+        fullSurahAudio.src = '';
+        setFullSurahAudio(null);
+        setIsPlayingFull(false);
+        setCurrentSurahNumber(null);
+      }
+    };
+  }, [fullSurahAudio]);
+
   return (
     <div className="bg-gradient-to-br from-emerald-50 to-teal-50 min-h-screen">
       <Navbar />
@@ -272,8 +285,8 @@ function Quran() {
                       </div>
                       <div className={`absolute -top-1 -right-1 w-3 h-3 ${isPlayingFull ? 'bg-red-400 animate-pulse' : 'bg-yellow-400 animate-ping'} rounded-full`}></div>
                     </div>
-                    <div className="flex flex-col items-start">
-                      <span className="font-semibold text-lg">
+                    <div className="flex flex-col items-start w-full">
+                      <span className="font-semibold text-sm md:text-lg">
                         {isPlayingFull ? 'إيقاف السورة' : 'استمع للسورة كاملة'}
                       </span>
                       <span className="text-sm text-white text-opacity-80">بصوت الشيخ العفاسي</span>
