@@ -29,6 +29,21 @@ export async function getTafsir(ayahNumber, tafsirId = 14){
   return tafsir;
 }
 
+
+export async function getReciters(){
+  try {
+    const res = await fetch(`https://mp3quran.net/api/v3/reciters?language=ar`);
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+    const data = await res.json();
+    return data.reciters || [];
+  } catch (error) {
+    console.error('Error fetching reciters:', error);
+    return [];
+  }
+}
+
 export const tafsirSources = [
   {
     id: 14,

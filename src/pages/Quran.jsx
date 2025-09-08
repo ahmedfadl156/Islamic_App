@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react"
 import Navbar from "../components/Navbar"
 import { getQuran, getSurah, getTafsir } from "../services/getQuran"
+import Card from "../components/Card"
+import ReciterSelector from "../components/ReciterSelector"
 import { IoMdPlay, IoMdPause } from "react-icons/io";
+import { IoStop } from "react-icons/io5";
+import { FaBook } from "react-icons/fa";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import SkeletonLoader from "../components/SkeletonLoader";
-import SurahData from "../components/SurahData";
-import TafsirModal from "../components/TafsirModal";
-import Footer from "../components/Footer";
+import SkeletonLoader from "../components/SkeletonLoader"
+import SurahData from "../components/SurahData"
+import TafsirModal from "../components/TafsirModal"
+import Footer from "../components/Footer"
 
 function Quran() {
   const [quranData , setQuranData] = useState([]);
@@ -14,17 +18,33 @@ function Quran() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSura, setSelectedSura] = useState(null);
   const [surahData, setSurahData] = useState(null);
-  const [fullSurahAudio, setFullSurahAudio] = useState(null);
-  const [isPlayingFull, setIsPlayingFull] = useState(false);
-  const [currentSurahNumber, setCurrentSurahNumber] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [audio, setAudio] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [showTafsirModal, setShowTafsirModal] = useState(false);
+  const [selectedAyah, setSelectedAyah] = useState(null);
+  const [selectedReciter, setSelectedReciter] = useState(null);
+  const [isLoadingQuranData, setIsLoadingQuranData] = useState(true);
   const [isLoadingSurah, setIsLoadingSurah] = useState(false);
   const [isLoadingAudio, setIsLoadingAudio] = useState(false);
-  const [isLoadingQuranData, setIsLoadingQuranData] = useState(true);
+  const [isPlayingFull, setIsPlayingFull] = useState(false);
   const [isTafsirModalOpen, setIsTafsirModalOpen] = useState(false);
   const [tafsirData, setTafsirData] = useState(null);
   const [currentAyahNumber, setCurrentAyahNumber] = useState(null);
   const [selectedTafsirId, setSelectedTafsirId] = useState(14); 
+  const [reciterError , setReciterError] = useState("");
+
+  const cleanupAudio = (audioElement) => {
+    if (!audioElement) return;
+    audioElement.pause();
+    audioElement.currentTime = 0;
+    audioElement.removeAttribute("src");
+    audioElement.load();
+  };
   
+
   function searchSurahs(query) {
     setSearchQuery(query);
     if (!query) {
@@ -44,72 +64,128 @@ function Quran() {
     }
   }
 
-  function playFullSurah() {
-    if (fullSurahAudio && currentSurahNumber === selectedSura?.number) {
-      if (isPlayingFull) {
-        fullSurahAudio.pause();
-        setIsPlayingFull(false);
-      } else {
-        fullSurahAudio.play();
-        setIsPlayingFull(true);
+  const playFullSurah = () => {
+    if (!selectedSura || !selectedReciter) {
+      if (!selectedReciter) {
+        setReciterError('يرجى اختيار قارئ أولاً');
+        setTimeout(() => {
+          setReciterError('');
+        }, 5000);
       }
       return;
     }
 
-    if (fullSurahAudio) {
-      fullSurahAudio.pause();
-      fullSurahAudio.currentTime = 0;
-      fullSurahAudio.src = '';
-      setFullSurahAudio(null);
+    if (isPlayingFull && audio) {
+      audio.pause();
       setIsPlayingFull(false);
-      setCurrentSurahNumber(null);
+      setIsPlaying(false);
+      return;
     }
 
-    // Start loading state
-    setIsLoadingAudio(true);
-
-    const audioUrl = `https://download.quranicaudio.com/quran/mishaari_raashid_al_3afaasee/${Number(selectedSura?.number).toString().padStart(3, '0')}.mp3`;
-    const audio = new Audio(audioUrl);
-    
-    audio.addEventListener('loadstart', () => {
-      console.log('بدء تحميل السورة...');
-      setIsLoadingAudio(true);
-    });
-    
-    audio.addEventListener('canplay', () => {
-      setIsLoadingAudio(false);
+    if (audio && !isPlayingFull) {
       audio.play();
       setIsPlayingFull(true);
-      setCurrentSurahNumber(selectedSura?.number);
-    });
-    
-    audio.addEventListener('ended', () => {
-      setIsPlayingFull(false);
-      setCurrentSurahNumber(null);
-    });
-    
-    audio.addEventListener('error', (e) => {
-      console.error('خطأ في تشغيل السورة:', e);
-      setIsLoadingAudio(false);
-      setIsPlayingFull(false);
-      setCurrentSurahNumber(null);
-    });
-    
-    setFullSurahAudio(audio);
-  }
+      setIsPlaying(true);
+      return;
+    }
 
-  function handleSurahSelection(sura) {
-    if (fullSurahAudio) {
-      fullSurahAudio.pause();
-      fullSurahAudio.currentTime = 0;
-      fullSurahAudio.src = '';
-      setFullSurahAudio(null);
+    setIsLoadingAudio(true);
+
+    const surahNumber = Number(selectedSura.number).toString().padStart(3, '0');
+    const audioUrl = `${selectedReciter.server}${surahNumber}.mp3`;
+    
+    const newAudio = new Audio(audioUrl);
+    
+    newAudio.addEventListener('loadstart', () => {
+      setIsLoadingAudio(true);
+    });
+
+    newAudio.addEventListener('canplay', () => {
+      setIsLoadingAudio(false);
+      setIsPlayingFull(true);
+      setIsPlaying(true);
+    });
+    
+    newAudio.addEventListener('loadedmetadata', () => {
+      setDuration(newAudio.duration);
+    });
+    
+    newAudio.addEventListener('timeupdate', () => {
+      setCurrentTime(newAudio.currentTime);
+    });
+    
+    newAudio.addEventListener('ended', () => {
+      setIsPlaying(false);
       setIsPlayingFull(false);
-      setCurrentSurahNumber(null);
+      setCurrentTime(0);
+    });
+    
+    newAudio.addEventListener('error', (e) => {
+      if (!newAudio.src) return;
+      console.error('Audio error:', e);
+      alert('حدث خطأ في تشغيل الصوت. تأكد من اتصال الإنترنت.');
+      setIsPlaying(false);
+      setIsPlayingFull(false);
+      setIsLoadingAudio(false);
+    });
+    
+    
+    setAudio(newAudio);
+    newAudio.play();
+  };
+
+  const handleSurahSelection = (sura) => {
+    if (audio) {
+      cleanupAudio(audio);
+      setAudio(null);
     }
     setSelectedSura(sura);
-    setIsLoadingSurah(true);
-  }
+    setIsPlaying(false);
+    setIsPlayingFull(false);
+    setIsLoadingAudio(false);
+    setCurrentTime(0);
+    setDuration(0);
+    
+  };
+
+  const handleReciterChange = (reciter) => {
+    if (audio) {
+      cleanupAudio(audio);
+      setAudio(null);
+    }
+    setIsPlaying(false);
+    setIsPlayingFull(false);
+    setIsLoadingAudio(false);
+    setCurrentTime(0);
+    setDuration(0);
+    setSelectedReciter(reciter);
+  };
+
+  const togglePlayPause = () => {
+    if (!audio) return;
+    
+    if (isPlaying) {
+      audio.pause();
+      setIsPlaying(false);
+      setIsPlayingFull(false);
+    } else {
+      audio.play();
+      setIsPlaying(true);
+      setIsPlayingFull(true);
+    }
+  };
+
+  const stopAudio = () => {
+    if (!audio) return;
+    
+    audio.pause();
+    audio.currentTime = 0;
+    setAudio(null);
+    setIsPlaying(false);
+    setIsPlayingFull(false);
+    setCurrentTime(0);
+    setDuration(0);
+  };
 
   async function handleTafsirClick(ayahNumber) {
     setCurrentAyahNumber(ayahNumber);
@@ -160,6 +236,10 @@ function Quran() {
     async function fetchSurah(){
       if (selectedSura?.number) {
         setIsLoadingSurah(true);
+        setIsPlaying(false);
+        setIsPlayingFull(false);
+        setIsLoadingAudio(false);
+        
         try {
           const surah = await getSurah(selectedSura?.number);
           setSurahData(surah.data.ayahs);
@@ -174,6 +254,7 @@ function Quran() {
         }
       }
     }
+
     fetchSurah();
   }, [selectedSura?.number]);
 
@@ -195,16 +276,12 @@ function Quran() {
 
   useEffect(() => {
     return () => {
-      if (fullSurahAudio) {
-        fullSurahAudio.pause();
-        fullSurahAudio.currentTime = 0;
-        fullSurahAudio.src = '';
-        setFullSurahAudio(null);
-        setIsPlayingFull(false);
-        setCurrentSurahNumber(null);
+      if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
       }
     };
-  }, [fullSurahAudio]);
+  }, [audio]);
 
   return (
     <div className="bg-gradient-to-br from-emerald-50 to-teal-50 min-h-screen">
@@ -278,6 +355,15 @@ function Quran() {
                   </div>
                 </div>
                 
+                <div className="mb-6">
+                  <h3 className="text-lg font-semibold text-gray-700 mb-3">اختر القارئ:</h3>
+                  <ReciterSelector 
+                    selectedReciter={selectedReciter}
+                    onReciterChange={handleReciterChange}
+                  />
+                  {reciterError && <p className="text-red-500 mt-4 font-bold text-center">{reciterError}</p>}
+                </div>
+
                 <div className="flex justify-center mb-4">
                   <button 
                     onClick={playFullSurah}
@@ -313,7 +399,7 @@ function Quran() {
                         {isLoadingAudio ? 'جاري تحميل السورة...' : isPlayingFull ? 'إيقاف السورة' : 'استمع للسورة كاملة'}
                       </span>
                       <span className="text-sm text-white text-opacity-80">
-                        {isLoadingAudio ? 'يرجى الانتظار' : 'بصوت الشيخ العفاسي'}
+                        {isLoadingAudio ? 'يرجى الانتظار' : selectedReciter ? `بصوت ${selectedReciter.name}` : 'اختر قارئ أولاً'}
                       </span>
                     </div>
                     <div className="flex space-x-1">
