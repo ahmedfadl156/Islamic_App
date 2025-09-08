@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { Analytics } from '@vercel/analytics/react'
 import AppLayout from "./pages/AppLayout"
 import PrayerTimes from "./pages/PrayerTimes"
 import Quran from "./pages/Quran"
@@ -19,6 +20,7 @@ function App() {
       <Route path="/azkar" element={<Azkar />} />
     </Routes>
     </BrowserRouter>
+    <Analytics />
     </>
   )
 }
