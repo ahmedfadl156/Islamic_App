@@ -14,8 +14,7 @@ export async function reverseGeocode(latitude, longitude) {
     
     if (data) {
       // Extract city and country information
-      const city = data.city || data.locality || data.principalSubdivision || 
-                   data.countryName || 'مدينة غير معروفة';
+      const city = data.city || data.locality || data.principalSubdivision || data.countryName || 'مدينة غير معروفة';
       const country = data.countryName || 'دولة غير معروفة';
       
       return {

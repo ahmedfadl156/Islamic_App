@@ -4,6 +4,7 @@ import { HiOutlineHome } from "react-icons/hi";
 import { HiOutlineCalendar } from "react-icons/hi";
 import { HiBookOpen } from "react-icons/hi";
 import { LuBookOpenText } from "react-icons/lu";
+import { SiStorybook } from "react-icons/si";
 
 function Navbar() {
   const location = useLocation();
@@ -29,6 +30,11 @@ function Navbar() {
       path: "/azkar",
       icon: LuBookOpenText,
       label: "الأذكار"
+    },
+    {
+      path: "/stories",
+      icon: SiStorybook,
+      label: "القصص"
     }
   ];
 
@@ -48,7 +54,7 @@ function Navbar() {
           </div>
           
           <div className="hidden md:block">
-            <div className="ml-10 flex items-center gap-5">
+            <div className="ml-10 flex items-center gap-2">
               {navItems.map((item) => {
                 const Icon = item.icon;
                 const active = isActive(item.path);

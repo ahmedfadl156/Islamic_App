@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Footer from "../components/Footer"
 import Navbar from "../components/Navbar"
 import AzkarCard from "../components/AzkarCard"
@@ -6,6 +6,7 @@ import AzkarModal from "../components/AzkarModal"
 import AzkarElsabah from "../services/AzkarElsabah"
 import AzkarElMasaa from "../services/AzkarElmasaa"
 import AzkarAfterPrayer from "../services/AzkarAfterPrayer"
+import { getStories } from '../services/getStories'
 
 function Azkar() {
   const [modalState, setModalState] = useState({

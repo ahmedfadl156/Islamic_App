@@ -5,10 +5,20 @@ import PrayerTimes from "./pages/PrayerTimes"
 import Quran from "./pages/Quran"
 import Home from "./pages/Home"
 import Azkar from "./pages/Azkar"
+import Stories from "./pages/Stories"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import StoryPage from "./pages/StoryPage"
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 0,
+    }
+  }
+})
 
 function App() {
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
     <BrowserRouter>
     <Routes>
       <Route path="/" element={<AppLayout />}>
@@ -18,10 +28,12 @@ function App() {
       <Route path="/prayer-times" element={<PrayerTimes />} />
       <Route path="/quran" element={<Quran />} />
       <Route path="/azkar" element={<Azkar />} />
+      <Route path="/stories" element={<Stories />} />
+      <Route path="/story/:id" element={<StoryPage />}/>
     </Routes>
     </BrowserRouter>
     <Analytics />
-    </>
+    </QueryClientProvider>
   )
 }
 
