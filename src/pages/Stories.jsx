@@ -3,12 +3,15 @@ import Footer from "../components/Footer"
 import Navbar from "../components/Navbar"
 import StoryCard from "../components/StoryCard";
 import { useStories } from "../services/useStories"
+import ReactPaginate from "react-paginate";
 
 function Stories() {
   const {stories , isLoadingStories , error} = useStories();
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [sortBy, setSortBy] = useState('');
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 9;
 
   const filteredAndSortedStories = useMemo(() => {
     let filtered = stories;
@@ -40,6 +43,18 @@ function Stories() {
     return filtered;
   }, [stories, search, selectedCategory, sortBy]);
 
+  const pageCount = Math.ceil(filteredAndSortedStories.length / itemsPerPage);
+  const offset = currentPage * itemsPerPage;
+  const currentPageStories = filteredAndSortedStories.slice(offset, offset + itemsPerPage);
+
+  const handlePageClick = (event) => {
+    setCurrentPage(event.selected);
+  };
+
+  const resetPage = () => {
+    setCurrentPage(0);
+  };
+
   if (isLoadingStories) {
     return <div>Loading...</div>;
   }
@@ -67,7 +82,10 @@ function Stories() {
               type="text"
               placeholder="ابحث في القصص..."
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                resetPage();
+              }}
               className="w-full bg-white/80 backdrop-blur-sm border border-white/30 rounded-xl py-3 pr-10 pl-4 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-300 shadow-lg hover:shadow-xl"
             />
           </div>
@@ -75,7 +93,10 @@ function Stories() {
           <div className="relative">
             <select 
               value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
+              onChange={(e) => {
+                setSelectedCategory(e.target.value);
+                resetPage();
+              }}
               className="bg-white/80 backdrop-blur-sm border border-white/30 rounded-xl py-3 px-6 pr-10 text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-300 shadow-lg hover:shadow-xl appearance-none cursor-pointer min-w-[200px]"
             >
               <option value="">جميع الفئات</option>
@@ -94,7 +115,10 @@ function Stories() {
           <div className="relative">
             <select 
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
+              onChange={(e) => {
+                setSortBy(e.target.value);
+                resetPage();
+              }}
               className="bg-white/80 backdrop-blur-sm border border-white/30 rounded-xl py-3 px-6 pr-10 text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-300 shadow-lg hover:shadow-xl appearance-none cursor-pointer min-w-[180px]"
             >
               <option value="">الترتيب</option>
@@ -111,8 +135,8 @@ function Stories() {
       </div>
 
       <section className="stories grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 my-10 mx-auto max-w-6xl px-8">
-        {filteredAndSortedStories.length > 0 ? (
-          filteredAndSortedStories.map(story => (
+        {currentPageStories.length > 0 ? (
+          currentPageStories.map(story => (
             <StoryCard key={story.id} story={story} />
           ))
         ) : (
@@ -131,6 +155,7 @@ function Stories() {
                   setSearch('');
                   setSelectedCategory('');
                   setSortBy('');
+                  resetPage();
                 }}
                 className="mt-4 bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-lg transition-colors"
               >
@@ -140,6 +165,31 @@ function Stories() {
           </div>
         )}
       </section>
+      {pageCount > 1 && (
+        <div className="paginator flex justify-center my-8">
+          <ReactPaginate
+            breakLabel="..."
+            nextLabel="التالي"
+            previousLabel="السابق"
+            pageCount={pageCount}
+            pageRangeDisplayed={5}
+            marginPagesDisplayed={2}
+            onPageChange={handlePageClick}
+            containerClassName="flex items-center gap-2"
+            pageClassName="px-3 py-2 rounded-lg border border-emerald-200 hover:bg-emerald-50 transition-colors cursor-pointer"
+            pageLinkClassName="text-emerald-700 font-medium"
+            activeClassName="bg-emerald-600 text-white border-emerald-600"
+            activeLinkClassName="text-white"
+            previousClassName="px-4 py-2 rounded-lg border border-emerald-200 hover:bg-emerald-50 transition-colors cursor-pointer"
+            nextClassName="px-4 py-2 rounded-lg border border-emerald-200 hover:bg-emerald-50 transition-colors cursor-pointer"
+            previousLinkClassName="text-emerald-700 font-medium"
+            nextLinkClassName="text-emerald-700 font-medium"
+            disabledClassName="opacity-50 cursor-not-allowed"
+            breakClassName="px-3 py-2"
+            breakLinkClassName="text-emerald-700"
+          />
+        </div>
+      )}
       <Footer />
     </div>
   )
