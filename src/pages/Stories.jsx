@@ -56,7 +56,32 @@ function Stories() {
   };
 
   if (isLoadingStories) {
-    return <div>Loading...</div>;
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50">
+        <Navbar />
+        <div className="flex items-center justify-center min-h-[80vh]">
+          <div className="text-center">
+            <div className="relative mb-8">
+              <div className="animate-spin rounded-full h-20 w-20 border-4 border-emerald-200 border-t-emerald-600 mx-auto"></div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <svg className="w-8 h-8 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+            </div>
+            <h2 className="text-2xl font-bold text-emerald-800 mb-2">جاري تحميل القصص</h2>
+            <p className="text-emerald-600">يرجى الانتظار قليلاً...</p>
+            <div className="flex justify-center mt-4">
+              <div className="flex space-x-1">
+                <div className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce"></div>
+                <div className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                <div className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (

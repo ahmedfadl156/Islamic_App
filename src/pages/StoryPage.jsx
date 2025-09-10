@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useStory } from "../services/useStories";
+import { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
@@ -7,6 +8,40 @@ function StoryPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { story, isLoadingStory, error } = useStory(id);
+  const [showToast, setShowToast] = useState(false);
+
+  const showToastMessage = () => {
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 3000);
+  };
+
+  async function handleShare(){
+    try {
+      const shareText = `${story.title}\n\n${story.content}\n\nرابط القصة: ${window.location.href}`;
+      await navigator.clipboard.writeText(shareText);
+      showToastMessage();
+      
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: story.title,
+            text: `${story.title}\n\nرابط القصة: ${window.location.href}`,
+            url: window.location.href,
+          });
+        } catch (shareError) {
+          console.log('Share cancelled');
+        }
+      }
+    } catch (error) {
+      console.error('Error sharing:', error);
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        showToastMessage();
+      } catch (clipboardError) {
+        console.error('Clipboard error:', clipboardError);
+      }
+    }
+  }
 
   if (isLoadingStory) {
     return (
@@ -174,7 +209,7 @@ function StoryPage() {
           </button>
 
           <div className="flex gap-3">
-            <button className="group flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl">
+            <button onClick={handleShare} className="group flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl">
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
               </svg>
@@ -185,6 +220,17 @@ function StoryPage() {
       </div>
 
       <Footer />
+      
+      {showToast && (
+        <div className="fixed top-6 right-6 bg-emerald-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fade-in">
+          <div className="flex items-center gap-2">
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+            </svg>
+            <span>تم نسخ القصة كاملة إلى الحافظة!</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
