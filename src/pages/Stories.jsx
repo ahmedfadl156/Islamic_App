@@ -198,7 +198,6 @@ function Stories() {
             previousLabel="السابق"
             pageCount={pageCount}
             pageRangeDisplayed={5}
-            marginPagesDisplayed={2}
             onPageChange={handlePageClick}
             containerClassName="flex items-center gap-2"
             pageClassName="px-3 py-2 rounded-lg border border-emerald-200 hover:bg-emerald-50 transition-colors cursor-pointer"
