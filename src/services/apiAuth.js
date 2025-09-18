@@ -47,7 +47,6 @@ export async function Register({name , email , password , phone}){
       return data
 }
 
-// دالة تأكيد البريد الإلكتروني
 export async function confirmEmail() {
     const { data, error } = await supabase.auth.getSession()
     
@@ -55,5 +54,20 @@ export async function confirmEmail() {
         throw new Error(error.message);
     }
     
+    return data;
+}
+
+
+export async function updateProfile({name , email , phone}){
+    const {data , error} = await supabase.auth.updateUser({
+        email: email,
+        data: {
+            displayName: name,
+            Phone: phone
+        }
+    })
+    if(error){
+        throw new Error(error.message);
+    }
     return data;
 }

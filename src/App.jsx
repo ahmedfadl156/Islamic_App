@@ -13,6 +13,8 @@ import Register from "./pages/Register"
 import Bookmarks from "./pages/Bookmarks"
 import toast, { Toaster } from 'react-hot-toast';
 import Confirm from "./pages/Confirm";
+import AccountInfo from "./pages/AccountInfo";
+import PageNotFound from "./pages/PageNotFound";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,6 +42,8 @@ function App() {
       <Route path="/register" element={<Register />} />
       <Route path="/bookmarks" element={<Bookmarks />} />
       <Route path="/confirm" element={<Confirm />} />
+      <Route path="/account-info" element={<AccountInfo />} />
+      <Route path="*" element={<PageNotFound />} />
     </Routes>
     </BrowserRouter>
     <Toaster position="top-center" reverseOrder={false} />

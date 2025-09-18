@@ -6,7 +6,6 @@ export function useAuth() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // الحصول على الجلسة الحالية
     const getSession = async () => {
       const { data: { session } } = await supabase.auth.getSession()
       setUser(session?.user ?? null)
@@ -15,7 +14,6 @@ export function useAuth() {
 
     getSession()
 
-    // الاستماع لتغييرات المصادقة
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         console.log('Auth event:', event, session?.user?.email)
@@ -30,7 +28,6 @@ export function useAuth() {
   return { user, loading }
 }
 
-// دالة للتحقق من تأكيد البريد الإلكتروني
 export function useEmailConfirmationStatus() {
   const { user } = useAuth()
   
