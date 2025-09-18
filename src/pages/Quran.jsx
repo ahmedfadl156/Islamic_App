@@ -259,6 +259,16 @@ function Quran() {
             ...prev,
             edition: surah.data.edition,
           }));
+          // Scroll to surah content on mobile devices
+          setTimeout(() => {
+            const surahContentElement = document.querySelector('.right');
+            if (surahContentElement) {
+              surahContentElement.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+              });
+            }
+          }, 100);
         } catch (error) {
           console.error("Error fetching surah:", error);
         } finally {
@@ -295,7 +305,6 @@ function Quran() {
     };
   }, [audio]);
 
-  // Handle URL parameters for navigation from bookmarks
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const surahParam = urlParams.get('surah');
@@ -308,12 +317,10 @@ function Quran() {
       if (targetSurah && (!selectedSura || selectedSura.number !== surahNumber)) {
         handleSurahSelection(targetSurah);
         
-        // If there's an ayah parameter, scroll to it after surah loads
         if (ayahParam) {
           const ayahNumber = parseInt(ayahParam);
-          // Wait for surah data to load, then scroll
           setTimeout(() => {
-            scrollToAyah(ayahNumber, 4000); // Longer highlight for navigation
+            scrollToAyah(ayahNumber, 4000); 
           }, 1000);
         }
       }
