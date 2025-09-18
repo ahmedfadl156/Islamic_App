@@ -8,6 +8,11 @@ import Azkar from "./pages/Azkar"
 import Stories from "./pages/Stories"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import StoryPage from "./pages/StoryPage"
+import Login from "./pages/Login"
+import Register from "./pages/Register"
+import Bookmarks from "./pages/Bookmarks"
+import toast, { Toaster } from 'react-hot-toast';
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -30,8 +35,12 @@ function App() {
       <Route path="/azkar" element={<Azkar />} />
       <Route path="/stories" element={<Stories />} />
       <Route path="/story/:id" element={<StoryPage />}/>
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/bookmarks" element={<Bookmarks />} />
     </Routes>
     </BrowserRouter>
+    <Toaster position="top-center" reverseOrder={false} />
     <Analytics />
     </QueryClientProvider>
   )

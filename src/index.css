@@ -66,3 +66,34 @@
   background: linear-gradient(135deg, #10b981, #059669);
   transform: scale(1.2);
 }
+
+/* Ayah Highlight Animation */
+.highlight-ayah {
+  animation: highlightPulse 3s ease-in-out;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1)) !important;
+  border-radius: 12px !important;
+  border: 2px solid rgba(16, 185, 129, 0.3) !important;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.2) !important;
+  transform: scale(1.02) !important;
+}
+
+@keyframes highlightPulse {
+  0% {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.2));
+    border-color: rgba(16, 185, 129, 0.5);
+    box-shadow: 0 0 30px rgba(16, 185, 129, 0.4);
+    transform: scale(1.05);
+  }
+  50% {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.15));
+    border-color: rgba(16, 185, 129, 0.4);
+    box-shadow: 0 0 25px rgba(16, 185, 129, 0.3);
+    transform: scale(1.03);
+  }
+  100% {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1));
+    border-color: rgba(16, 185, 129, 0.3);
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+    transform: scale(1.02);
+  }
+}

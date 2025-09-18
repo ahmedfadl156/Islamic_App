@@ -17,7 +17,7 @@ function Stories() {
     let filtered = stories;
 
     if (search.trim()) {
-      filtered = filtered.filter(story => 
+        filtered = filtered.filter(story => 
         story.title?.toLowerCase().includes(search.toLowerCase()) ||
         story.content?.toLowerCase().includes(search.toLowerCase())
       );
@@ -197,8 +197,8 @@ function Stories() {
             nextLabel="التالي"
             previousLabel="السابق"
             pageCount={pageCount}
-            pageRangeDisplayed={5}
-            marginPagesDisplayed={2}
+            pageRangeDisplayed={3}
+            marginPagesDisplayed={1}
             onPageChange={handlePageClick}
             containerClassName="flex items-center gap-2"
             pageClassName="px-3 py-2 rounded-lg border border-emerald-200 hover:bg-emerald-50 transition-colors cursor-pointer"

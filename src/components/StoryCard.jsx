@@ -10,7 +10,7 @@ function StoryCard({ story }) {
   const preview = story.content?.substring(0, 150) + (story.content?.length > 150 ? '...' : '');
   
   const wordCount = story.content?.split(' ').length || 0;
-  const readingTime = Math.ceil(wordCount / 200);
+  const readingTime = Math.ceil(wordCount / 200); 
 
   const getCategoryStyle = (category) => {
     const categories = {

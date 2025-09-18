@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { getQuran, getSurah, getTafsir } from "../services/getQuran";
 import Card from "../components/Card";
@@ -12,8 +13,10 @@ import SurahData from "../components/SurahData";
 import TafsirModal from "../components/TafsirModal";
 import Footer from "../components/Footer";
 import { useStories } from "../services/useStories";
+import { scrollToAyah } from "../utils/navigation";
 
 function Quran() {
+  const location = useLocation();
   const [quranData, setQuranData] = useState([]);
   const [originalData, setOriginalData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -291,6 +294,31 @@ function Quran() {
       }
     };
   }, [audio]);
+
+  // Handle URL parameters for navigation from bookmarks
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const surahParam = urlParams.get('surah');
+    const ayahParam = urlParams.get('ayah');
+
+    if (surahParam && quranData.length > 0) {
+      const surahNumber = parseInt(surahParam);
+      const targetSurah = quranData.find(sura => sura.number === surahNumber);
+      
+      if (targetSurah && (!selectedSura || selectedSura.number !== surahNumber)) {
+        handleSurahSelection(targetSurah);
+        
+        // If there's an ayah parameter, scroll to it after surah loads
+        if (ayahParam) {
+          const ayahNumber = parseInt(ayahParam);
+          // Wait for surah data to load, then scroll
+          setTimeout(() => {
+            scrollToAyah(ayahNumber, 4000); // Longer highlight for navigation
+          }, 1000);
+        }
+      }
+    }
+  }, [location.search, quranData, selectedSura]);
 
   return (
     <div className="bg-gradient-to-br from-emerald-50 to-teal-50 min-h-screen">
