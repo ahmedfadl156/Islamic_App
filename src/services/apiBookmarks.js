@@ -36,7 +36,12 @@ export async function getUserBookmarks(){
 
 
 export async function deleteBookmark(bookmarkId){
-    const {data, error} = await supabase.from('bookmarks').delete().eq('id', bookmarkId)
+    const {data: {user}} = await supabase.auth.getUser();
+    if(!user){
+        throw new Error("يجب تسجيل الدخول أولاً لحذف المرجعيات");
+    }
+    
+    const {data, error} = await supabase.from('bookmarks').delete().eq('id', bookmarkId).eq('user_id', user.id)
     if(error){
         throw new Error("حدث خطأ أثناء حذف المرجعية");
     }
