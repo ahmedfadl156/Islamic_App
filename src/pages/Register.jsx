@@ -8,13 +8,45 @@ export default function Register() {
     const [email , setEmail] = useState('')
     const [password , setPassword] = useState('')
     const [phone , setPhone] = useState('')
-    const {register , isLoading} = useRegister()
+    const [emailSent, setEmailSent] = useState(false)
+    const {register , isLoading} = useRegister(setEmailSent)
+
+    function checkPhone(phone){
+      const phoneRegex = /^(\+201|01|00201)[0-2,5]{1}[0-9]{8}$/;
+      return phoneRegex.test(phone);
+    }
+
+    function checkEmail(email){
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      return emailRegex.test(email.trim());
+    }
+
+    function checkPassword(password){
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      return passwordRegex.test(password);
+    }
+
 
   const handleSubmit = (e) => {
     e.preventDefault()
     
     if (!name || !email || !password || !phone) {
       toast.error('الرجاء ملء جميع الحقول')
+      return
+    }
+
+    if (!checkEmail(email)) {
+      toast.error('الرجاء إدخال بريد إلكتروني صحيح')
+      return
+    }
+
+    if (!checkPhone(phone)) {
+      toast.error('الرجاء إدخال رقم هاتف صحيح')
+      return
+    }
+
+    if (!checkPassword(password)) {
+      toast.error('كلمة المرور يجب أن تحتوي على 8 أحرف على الأقل مع حروف كبيرة وصغيرة وأرقام ورموز')
       return
     }
 
@@ -141,6 +173,24 @@ export default function Register() {
             >
               {isLoading ? 'جاري إنشاء الحساب...' : 'إنشاء الحساب'}
             </button>
+
+            {/* رسالة تأكيد إرسال البريد الإلكتروني */}
+            {emailSent && (
+              <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <div className="flex items-center">
+                  <svg className="w-5 h-5 text-blue-600 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                  </svg>
+                  <h3 className="text-blue-800 font-semibold">تم إرسال رابط التأكيد!</h3>
+                </div>
+                <p className="text-blue-700 text-sm mt-2">
+                  تم إرسال رابط تأكيد البريد الإلكتروني إلى <span className="font-semibold">{email}</span>
+                </p>
+                <p className="text-blue-600 text-xs mt-1">
+                  يرجى التحقق من صندوق الوارد والضغط على رابط التأكيد لإكمال عملية التسجيل.
+                </p>
+              </div>
+            )}
           </form>
 
           <div className="mt-6">

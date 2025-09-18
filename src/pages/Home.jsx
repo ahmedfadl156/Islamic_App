@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import ZakrniCard from "../components/ZakrniCard"
 import SectionsCards from "../components/SectionsCards"
+import TestEmailConfirmation from "../components/TestEmailConfirmation"
 
 function Home() {
   return (

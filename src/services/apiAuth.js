@@ -37,11 +37,23 @@ export async function Register({name , email , password , phone}){
             data: {
                 displayName: name,
                 Phone: phone
-            }
+            },
+            emailRedirectTo: `${window.location.origin}/confirm`
         }
       })
       if(error){
         throw new Error(error.message);
       }
       return data
+}
+
+// دالة تأكيد البريد الإلكتروني
+export async function confirmEmail() {
+    const { data, error } = await supabase.auth.getSession()
+    
+    if (error) {
+        throw new Error(error.message);
+    }
+    
+    return data;
 }
