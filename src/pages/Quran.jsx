@@ -152,6 +152,27 @@ function Quran() {
     setIsLoadingAudio(false);
     setCurrentTime(0);
     setDuration(0);
+    const surahData = document.querySelector('.surah-data');
+    if(surahData){
+      surahData.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+    const url = new URL(window.location);
+    url.searchParams.delete('surah');
+    url.searchParams.delete('ayah');
+    window.history.replaceState({}, '', url.pathname);
+    
+    setTimeout(() => {
+      const surahContentElement = document.querySelector('.right');
+      if (surahContentElement) {
+        surahContentElement.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }
+    }, 100);
   };
 
   const handleReciterChange = (reciter) => {
@@ -259,16 +280,6 @@ function Quran() {
             ...prev,
             edition: surah.data.edition,
           }));
-          // Scroll to surah content on mobile devices
-          setTimeout(() => {
-            const surahContentElement = document.querySelector('.right');
-            if (surahContentElement) {
-              surahContentElement.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-              });
-            }
-          }, 100);
         } catch (error) {
           console.error("Error fetching surah:", error);
         } finally {
@@ -315,7 +326,16 @@ function Quran() {
       const targetSurah = quranData.find(sura => sura.number === surahNumber);
       
       if (targetSurah && (!selectedSura || selectedSura.number !== surahNumber)) {
-        handleSurahSelection(targetSurah);
+        if (audio) {
+          cleanupAudio(audio);
+          setAudio(null);
+        }
+        setSelectedSura(targetSurah);
+        setIsPlaying(false);
+        setIsPlayingFull(false);
+        setIsLoadingAudio(false);
+        setCurrentTime(0);
+        setDuration(0);
         
         if (ayahParam) {
           const ayahNumber = parseInt(ayahParam);
@@ -325,7 +345,7 @@ function Quran() {
         }
       }
     }
-  }, [location.search, quranData, selectedSura]);
+  }, [location.search, quranData]);
 
   return (
     <div className="bg-gradient-to-br from-emerald-50 to-teal-50 min-h-screen">
@@ -542,7 +562,7 @@ function Quran() {
                 </div>
               </div>
 
-              <div className="flex-1 overflow-y-auto p-3 lg:p-6 space-y-4 lg:space-y-6 surah-content-scrollbar">
+              <div className="surah-data flex-1 overflow-y-auto p-3 lg:p-6 space-y-4 lg:space-y-6 surah-content-scrollbar">
                 {isLoadingSurah ? (
                   <SkeletonLoader />
                 ) : (
