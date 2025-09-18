@@ -130,7 +130,6 @@ function Navbar() {
                 </svg>
               </button>
 
-              {/* User Dropdown Menu */}
               {isUserMenuOpen && (
                 <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
                   <div className="px-4 py-2 border-b border-gray-100">
@@ -250,7 +249,7 @@ function Navbar() {
                   <button 
                     className="w-full text-right px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors duration-200 flex items-center gap-3 rounded-lg"
                     onClick={() => {
-                      console.log('Profile clicked');
+                      navigate('/account-info');
                       setIsMobileMenuOpen(false);
                     }}
                   >
