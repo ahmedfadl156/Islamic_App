@@ -45,28 +45,36 @@ function Card() {
     <>
       {sections.map((section, index) => (
         <div key={index} className="group relative">
-          <div className={`relative overflow-hidden rounded-2xl ${section.bgPattern} backdrop-blur-sm border border-white/20 shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:-translate-y-4 hover:rotate-1`}>
+          <div className={`relative overflow-hidden rounded-2xl ${section.bgPattern} dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900 backdrop-blur-sm border border-white/20 dark:border-gray-700 shadow-2xl hover:shadow-3xl dark:hover:shadow-emerald-500/10 transition-all duration-500 transform hover:-translate-y-4 hover:rotate-1`}>
             
-            <div className="absolute inset-0 opacity-5">
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+            <div className="absolute inset-0 opacity-5 dark:opacity-10">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white dark:via-gray-400 to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
             </div>
             
             <div className="relative p-8">
-              <div className={`inline-flex items-center justify-center w-20 h-20 ${section.iconBg} rounded-2xl shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 group-hover:rotate-6`}>
-                <div className={`text-3xl ${section.iconColor} group-hover:scale-125 transition-transform duration-300`}>
+              <div className={`inline-flex items-center justify-center w-20 h-20 ${section.iconBg} dark:bg-gray-700/50 dark:border dark:border-gray-600/50 rounded-2xl shadow-lg group-hover:shadow-xl dark:group-hover:shadow-emerald-500/20 transition-all duration-300 transform group-hover:scale-110 group-hover:rotate-6`}>
+                <div className={`text-3xl ${section.iconColor} ${
+                  index === 0 ? 'dark:text-blue-400' : 
+                  index === 1 ? 'dark:text-emerald-400' : 
+                  'dark:text-amber-400'
+                } group-hover:scale-125 transition-transform duration-300`}>
                   {section.icon}
                 </div>
               </div>
               
-              <div className={`absolute top-4 right-4 w-4 h-4 bg-gradient-to-r ${section.gradient} rounded-full opacity-60 animate-pulse group-hover:animate-ping`}></div>
+              <div className={`absolute top-4 right-4 w-4 h-4 bg-gradient-to-r ${section.gradient} rounded-full opacity-60 dark:opacity-80 animate-pulse group-hover:animate-ping`}></div>
+              
+              <div className="absolute top-4 left-4 text-emerald-500/20 dark:text-emerald-400/30 text-2xl opacity-50 group-hover:opacity-70 transition-opacity duration-300">
+                ۞
+              </div>
             </div>
             
             <div className="px-8 pb-8">
-              <h3 className="text-2xl font-bold text-gray-800 mb-4 group-hover:text-gray-900 transition-colors duration-300">
+              <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4 group-hover:text-gray-900 dark:group-hover:text-gray-100 transition-colors duration-300">
                 {section.title}
               </h3>
               
-              <p className="text-gray-600 leading-relaxed mb-8 text-sm line-clamp-3 group-hover:text-gray-700 transition-colors duration-300">
+              <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-8 text-sm line-clamp-3 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors duration-300">
                 {section.subtitle}
               </p>
               
@@ -77,16 +85,18 @@ function Card() {
                     <HiArrowLeft className="text-xl group-hover:translate-x-1 transition-transform duration-300" />
                   </div>
                   
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 dark:via-gray-300/20 to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                  
+                  <div className="absolute inset-0 rounded-xl opacity-0 dark:opacity-20 bg-gradient-to-r from-emerald-400/10 via-teal-400/10 to-emerald-400/10 group-hover:opacity-30 dark:group-hover:opacity-40 transition-opacity duration-500"></div>
                 </div>
               </Link>
             </div>
             
-            <div className={`absolute -top-2 -right-2 w-24 h-24 bg-gradient-to-br ${section.gradient} opacity-10 rounded-full blur-xl group-hover:opacity-20 group-hover:scale-150 transition-all duration-500`}></div>
-            <div className={`absolute -bottom-4 -left-4 w-32 h-32 bg-gradient-to-tr ${section.gradient} opacity-5 rounded-full blur-2xl group-hover:opacity-10 group-hover:scale-125 transition-all duration-700`}></div>
+            <div className={`absolute -top-2 -right-2 w-24 h-24 bg-gradient-to-br ${section.gradient} opacity-10 dark:opacity-20 rounded-full blur-xl group-hover:opacity-20 dark:group-hover:opacity-30 group-hover:scale-150 transition-all duration-500`}></div>
+            <div className={`absolute -bottom-4 -left-4 w-32 h-32 bg-gradient-to-tr ${section.gradient} opacity-5 dark:opacity-15 rounded-full blur-2xl group-hover:opacity-10 dark:group-hover:opacity-25 group-hover:scale-125 transition-all duration-700`}></div>
           </div>
           
-          <div className={`absolute inset-0 rounded-2xl ${section.bgPattern} opacity-20 blur-xl scale-105 -z-10 group-hover:opacity-30 group-hover:scale-110 transition-all duration-500`}></div>
+          <div className={`absolute inset-0 rounded-2xl ${section.bgPattern} dark:bg-gray-800/50 opacity-20 dark:opacity-40 blur-xl scale-105 -z-10 group-hover:opacity-30 dark:group-hover:opacity-60 group-hover:scale-110 transition-all duration-500`}></div>
         </div>
       ))}
     </>

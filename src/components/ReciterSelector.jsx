@@ -50,10 +50,10 @@ function ReciterSelector({ selectedReciter, onReciterChange }) {
   if (isLoading) {
     return (
       <div className="relative">
-        <div className="flex items-center justify-between bg-white border border-gray-300 rounded-lg px-4 py-3 cursor-not-allowed opacity-50">
+        <div className="flex items-center justify-between bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 cursor-not-allowed opacity-50">
           <div className="flex items-center gap-3">
             <AiOutlineLoading3Quarters className="w-5 h-5 text-emerald-500 animate-spin" />
-            <span className="text-gray-600">جاري تحميل القراء...</span>
+            <span className="text-gray-600 dark:text-gray-400">جاري تحميل القراء...</span>
           </div>
         </div>
       </div>
@@ -63,18 +63,18 @@ function ReciterSelector({ selectedReciter, onReciterChange }) {
   return (
     <div className="relative">
       <div 
-        className="flex items-center justify-between bg-white border border-gray-300 rounded-lg px-4 py-3 cursor-pointer hover:border-emerald-400 transition-colors"
+        className="flex items-center justify-between bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 cursor-pointer hover:border-emerald-400 dark:hover:border-emerald-500 transition-colors"
         onClick={() => setIsOpen(!isOpen)}
       >
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center">
-            <span className="text-emerald-600 font-bold text-sm">🎵</span>
+          <div className="w-8 h-8 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center">
+            <span className="text-emerald-600 dark:text-emerald-400 font-bold text-sm">🎵</span>
           </div>
           <div>
-            <p className="font-semibold text-gray-800">
+            <p className="font-semibold text-gray-800 dark:text-gray-200">
               {selectedReciter ? selectedReciter.name : 'اختر القارئ'}
             </p>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-500 dark:text-gray-400">
               {selectedReciter ? 'حفص عن عاصم' : 'اضغط لاختيار القارئ المفضل'}
             </p>
           </div>
@@ -87,29 +87,29 @@ function ReciterSelector({ selectedReciter, onReciterChange }) {
       </div>
 
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-xl z-50 max-h-80 overflow-hidden">
-          <div className="p-3 border-b border-gray-100">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg shadow-xl z-50 max-h-80 overflow-hidden">
+          <div className="p-3 border-b border-gray-100 dark:border-gray-700">
             <input
               type="text"
               placeholder="ابحث عن قارئ..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md outline-none focus:border-emerald-400"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:placeholder-gray-400 rounded-md outline-none focus:border-emerald-400 dark:focus:border-emerald-500"
               autoFocus
             />
           </div>
           
           <div className="max-h-60 overflow-y-auto custom-scrollbar">
             {filteredReciters.length === 0 ? (
-              <div className="p-4 text-center text-gray-500">
+              <div className="p-4 text-center text-gray-500 dark:text-gray-400">
                 لا توجد نتائج للبحث
               </div>
             ) : (
               filteredReciters.map((reciter) => (
                 <div
                   key={reciter.id}
-                  className={`p-3 hover:bg-emerald-50 cursor-pointer border-b border-gray-50 last:border-b-0 transition-colors ${
-                    selectedReciter?.id === reciter.id ? 'bg-emerald-100 border-emerald-200' : ''
+                  className={`p-3 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 cursor-pointer border-b border-gray-50 dark:border-gray-700 last:border-b-0 transition-colors ${
+                    selectedReciter?.id === reciter.id ? 'bg-emerald-100 dark:bg-emerald-900/50 border-emerald-200 dark:border-emerald-700' : ''
                   }`}
                   onClick={() => handleReciterSelect(reciter)}
                 >
@@ -117,15 +117,15 @@ function ReciterSelector({ selectedReciter, onReciterChange }) {
                     <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
                       selectedReciter?.id === reciter.id 
                         ? 'bg-emerald-500 text-white' 
-                        : 'bg-gray-100 text-gray-600'
+                        : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
                     }`}>
                       <span className="font-bold text-sm">
                         {reciter.name.charAt(0)}
                       </span>
                     </div>
                     <div className="flex-1">
-                      <p className="font-semibold text-gray-800">{reciter.name}</p>
-                      <p className="text-sm text-gray-500">حفص عن عاصم - مرتل</p>
+                      <p className="font-semibold text-gray-800 dark:text-gray-200">{reciter.name}</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">حفص عن عاصم - مرتل</p>
                     </div>
                     {selectedReciter?.id === reciter.id && (
                       <div className="w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center">

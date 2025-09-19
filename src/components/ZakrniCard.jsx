@@ -45,18 +45,18 @@ function ZakrniCard() {
   };
 
   return (
-    <div className="relative -top-5 md:-top-10 lg:-top-20 left-0 right-0 mx-auto z-50 bg-white/95 backdrop-blur-sm border border-emerald-100 shadow-2xl rounded-2xl p-6 w-[90%] max-w-4xl">
+    <div className="relative -top-5 md:-top-10 lg:-top-20 left-0 right-0 mx-auto z-50 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm border border-emerald-100 dark:border-gray-700 shadow-2xl rounded-2xl p-6 w-[90%] max-w-4xl">
       {/* الهيدر */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
           <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-          <h2 className="text-emerald-700 font-bold text-xl">ذكرني بالله</h2>
+          <h2 className="text-emerald-700 dark:text-emerald-400 font-bold text-xl">ذكرني بالله</h2>
         </div>
         
         <div className="flex items-center gap-3">
           <button 
             onClick={handleCopy}
-            className="group relative bg-emerald-50 hover:bg-emerald-100 text-emerald-600 p-2.5 rounded-xl transition-all duration-200 hover:shadow-md"
+            className="group relative bg-emerald-50 dark:bg-emerald-900/30 hover:bg-emerald-100 dark:hover:bg-emerald-800/50 text-emerald-600 dark:text-emerald-400 p-2.5 rounded-xl transition-all duration-200 hover:shadow-md"
             title="نسخ النص"
           >
             <TbCopy className="text-lg" />
@@ -69,7 +69,7 @@ function ZakrniCard() {
           
           <button 
             onClick={handleShare}
-            className="bg-emerald-50 hover:bg-emerald-100 text-emerald-600 p-2.5 rounded-xl transition-all duration-200 hover:shadow-md"
+            className="bg-emerald-50 dark:bg-emerald-900/30 hover:bg-emerald-100 dark:hover:bg-emerald-800/50 text-emerald-600 dark:text-emerald-400 p-2.5 rounded-xl transition-all duration-200 hover:shadow-md"
             title="مشاركة"
           >
             <FiShare className="text-lg" />
@@ -82,29 +82,29 @@ function ZakrniCard() {
         {loading ? (
           <div className="text-center py-8">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500 mx-auto mb-4"></div>
-            <p className="text-gray-500">جاري تحميل الآية...</p>
+            <p className="text-gray-500 dark:text-gray-400">جاري تحميل الآية...</p>
           </div>
         ) : ayah && ayah[0] && ayah[1] ? (
           <>
             {/* النص العربي */}
             <div className="text-right">
-              <p className="text-2xl leading-relaxed text-gray-800 font-medium mb-2">
+              <p className="text-2xl leading-relaxed text-gray-800 dark:text-gray-200 font-medium mb-2">
                 {ayah[0].text}
               </p>
             </div>
             
             {/* الترجمة الإنجليزية */}
-            <div className="border-t border-emerald-100 pt-4">
-              <p className="text-lg text-gray-600 italic leading-relaxed mb-2">
+            <div className="border-t border-emerald-100 dark:border-gray-600 pt-4">
+              <p className="text-lg text-gray-600 dark:text-gray-400 italic leading-relaxed mb-2">
                 {ayah[1].text}
               </p>
               
               {/* المصدر */}
               <div className="flex items-center justify-between">
-                <span className="text-emerald-600 font-semibold text-sm bg-emerald-50 px-3 py-1 rounded-full">
+                <span className="text-emerald-600 dark:text-emerald-400 font-semibold text-sm bg-emerald-50 dark:bg-emerald-900/30 px-3 py-1 rounded-full">
                   {ayah[0].surah.name} - آية {ayah[0].surah.number}
                 </span>
-                <span className="text-gray-500 text-sm">
+                <span className="text-gray-500 dark:text-gray-400 text-sm">
                   Quran {ayah[0].surah.number}:{ayah[0].number}
                 </span>
               </div>
@@ -112,10 +112,10 @@ function ZakrniCard() {
           </>
         ) : (
           <div className="text-center py-8">
-            <p className="text-red-500">حدث خطأ في تحميل الآية</p>
+            <p className="text-red-500 dark:text-red-400">حدث خطأ في تحميل الآية</p>
             <button 
               onClick={() => window.location.reload()} 
-              className="mt-2 text-emerald-600 hover:text-emerald-700 underline"
+              className="mt-2 text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 underline"
             >
               إعادة المحاولة
             </button>

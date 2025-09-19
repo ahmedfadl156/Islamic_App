@@ -57,13 +57,13 @@ function SurahData({ surahData, selectedSura, handleTafsirClick }) {
   return (
     surahData?.map((ayah, index) => (
       <div key={ayah.number} className="group" data-ayah-number={ayah.numberInSurah}>
-        <div className="flex items-start gap-3 lg:gap-4 p-3 lg:p-4 rounded-lg hover:bg-gray-50 transition-colors">
-          <span className="bg-emerald-100 text-emerald-700 w-7 h-7 lg:w-8 lg:h-8 flex items-center justify-center rounded-full text-xs lg:text-sm font-semibold flex-shrink-0 mt-1">
+        <div className="flex items-start gap-3 lg:gap-4 p-3 lg:p-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+          <span className="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 w-7 h-7 lg:w-8 lg:h-8 flex items-center justify-center rounded-full text-xs lg:text-sm font-semibold flex-shrink-0 mt-1">
             {ayah.numberInSurah}
           </span>
           <div className="flex-1 min-w-0">
             <div className="flex flex-col md:flex-row items-start justify-between gap-3 mb-3 lg:mb-4">
-              <p className="text-xl lg:text-2xl font-semibold leading-relaxed text-gray-800 font-arabic flex-1" style={{fontFamily: 'Amiri, serif', lineHeight: '2.2'}}>
+              <p className="text-xl lg:text-2xl font-semibold leading-relaxed text-gray-800 dark:text-gray-200 font-arabic flex-1" style={{fontFamily: 'Amiri, serif', lineHeight: '2.2'}}>
                 {ayah.text}
               </p>
               <div className="action-buttons flex gap-3 items-center">
@@ -72,8 +72,8 @@ function SurahData({ surahData, selectedSura, handleTafsirClick }) {
                 disabled={isAdding || isDeleting}
                 className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-300 flex-shrink-0 mt-1 ${
                   isAyahBookmarked(ayah.numberInSurah)
-                    ? "bg-gradient-to-r from-amber-100 to-yellow-100 text-amber-700 hover:from-amber-200 hover:to-yellow-200 border border-amber-200 shadow-sm" 
-                    : "bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-700 border border-gray-200"
+                    ? "bg-gradient-to-r from-amber-100 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30 text-amber-700 dark:text-amber-400 hover:from-amber-200 hover:to-yellow-200 dark:hover:from-amber-800/50 dark:hover:to-yellow-800/50 border border-amber-200 dark:border-amber-700 shadow-sm" 
+                    : "bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-200 border border-gray-200 dark:border-gray-600"
                 } ${isAdding || isDeleting ? 'opacity-50 cursor-not-allowed' : ''}`}
                 title={isAyahBookmarked(ayah.numberInSurah) ? "إزالة من المفضلة" : "إضافة للمفضلة"}
               >
@@ -95,7 +95,7 @@ function SurahData({ surahData, selectedSura, handleTafsirClick }) {
               </button>
               <button
                 onClick={() => handleTafsirClick(ayah.number)}
-                className="bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors flex items-center gap-1 flex-shrink-0 mt-1"
+                className="bg-blue-100 dark:bg-blue-900/30 hover:bg-blue-200 dark:hover:bg-blue-800/50 text-blue-700 dark:text-blue-400 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors flex items-center gap-1 flex-shrink-0 mt-1"
                 title="عرض التفسير"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -106,13 +106,13 @@ function SurahData({ surahData, selectedSura, handleTafsirClick }) {
               </div>
             </div>
             {ayah.audio && (
-              <div className="p-3 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-lg border border-emerald-100">
+              <div className="p-3 bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 rounded-lg border border-emerald-100 dark:border-emerald-700">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-3">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-                    <span className="text-sm font-medium text-emerald-700">استمع للآية</span>
+                    <span className="text-sm font-medium text-emerald-700 dark:text-emerald-400">استمع للآية</span>
                   </div>
-                  <span className="text-xs text-emerald-600 bg-emerald-100 px-2 py-1 rounded-full">
+                  <span className="text-xs text-emerald-600 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-900/30 px-2 py-1 rounded-full">
                     {selectedSura?.edition?.name || 'مشاري العفاسي'}
                   </span>
                 </div>

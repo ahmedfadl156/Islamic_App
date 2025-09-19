@@ -348,24 +348,24 @@ function Quran() {
   }, [location.search, quranData]);
 
   return (
-    <div className="bg-gradient-to-br from-emerald-50 to-teal-50 min-h-screen">
+    <div className="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-gray-900 dark:to-slate-900 min-h-screen">
       <Navbar />
       <div className="flex flex-col items-center justify-center gap-6 mx-auto max-w-6xl py-20 px-8">
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold dark:text-gray-200">
           القرآن الكريم
         </h1>
-        <p className="text-xl font-semibold text-gray-500">
+        <p className="text-xl font-semibold text-gray-500 dark:text-gray-400">
           اقرا و استمع واستمتع بأيات الله
         </p>
       </div>
       <section className="main-section mx-auto flex flex-col lg:flex-row justify-center items-center w-full lg:max-w-6xl gap-4 px-4">
-        <div className="left lg:w-[40%] w-full h-full bg-white shadow-lg p-6 rounded-lg">
-          <h1 className="text-2xl font-bold">سور القران كاملة</h1>
+        <div className="left lg:w-[40%] w-full h-full bg-white dark:bg-gray-800 shadow-lg p-6 rounded-lg">
+          <h1 className="text-2xl font-bold dark:text-gray-200">سور القران كاملة</h1>
           <form>
             <input
               type="text"
               placeholder="ابحث عن سورة"
-              className="border border-gray-300 rounded-lg w-full px-4 py-2 mt-4 outline-none"
+              className="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:placeholder-gray-400 rounded-lg w-full px-4 py-2 mt-4 outline-none focus:ring-2 focus:ring-emerald-500 dark:focus:ring-emerald-400"
               value={searchQuery}
               onChange={(e) => searchSurahs(e.target.value)}
             />
@@ -379,7 +379,7 @@ function Quran() {
                     className="border-t border-gray-300 p-4 flex justify-between items-center animate-pulse"
                   >
                     <div className="flex flex-col gap-2">
-                      <div className="h-6 bg-gray-200 rounded w-32"></div>
+                      <div className="animate-pulse bg-gray-200 dark:bg-gray-700 h-16 rounded-lg mb-3"></div>
                       <div className="h-4 bg-gray-200 rounded w-20"></div>
                     </div>
                     <div className="flex items-center gap-2">
@@ -396,27 +396,27 @@ function Quran() {
               quranData.map((sura) => (
                 <li
                   onClick={() => handleSurahSelection(sura)}
-                  className={`border-t border-gray-300 p-4 cursor-pointer hover:bg-gray-50 ${
+                  className={`border-t border-gray-300 p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 ${
                     selectedSura?.number === sura.number
-                      ? "bg-emerald-100 border-emerald-300"
-                      : "bg-white"
+                      ? "bg-emerald-100 dark:bg-emerald-900/50 border-emerald-300 dark:border-emerald-700"
+                      : "bg-white dark:bg-gray-700 dark:border-gray-600"
                   } flex justify-between items-center`}
                   key={sura.number}
                 >
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-2 dark:text-gray-200">
                     {sura.name}
-                    <span className="text-gray-500">
-                      {sura.ayahs.length} ايات
+                    <span className="text-gray-500 dark:text-gray-400">
+                      {sura.ayahs.length} آيات
                     </span>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 dark:text-gray-200">
                     <div className="flex flex-col text-left">
-                      <span className="text-gray-500">{sura.englishName}</span>
-                      <p className="text-gray-500">
+                      <p className="text-sm text-gray-500 dark:text-gray-400">{sura.englishName}</p>
+                      <p className="text-gray-500 dark:text-gray-400">
                         {sura.englishNameTranslation}
                       </p>
                     </div>
-                    <span className="bg-emerald-100 text-emerald-600 w-8 h-8 flex items-center justify-center rounded-full">
+                    <span className="bg-emerald-100 dark:bg-emerald-900/50 text-emerald-600 dark:text-emerald-400 w-8 h-8 flex items-center justify-center rounded-full">
                       {sura.number}
                     </span>
                   </div>
@@ -425,35 +425,35 @@ function Quran() {
             )}
           </ul>
         </div>
-        <div className="right lg:w-[60%] w-full bg-white shadow-lg rounded-lg h-[100vh] overflow-hidden flex flex-col">
+        <div className="right lg:w-[60%] w-full bg-white dark:bg-gray-800 shadow-lg rounded-lg h-[100vh] overflow-hidden flex flex-col">
           {selectedSura ? (
             <>
-              <div className="sticky top-0 bg-white border-b border-gray-200 p-6 z-10">
+              <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-6 z-10">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-4">
                     <span className="bg-emerald-500 text-white w-12 h-12 flex items-center justify-center rounded-full text-lg font-bold">
                       {selectedSura.number}
                     </span>
                     <div>
-                      <h1 className="text-3xl font-bold text-gray-800">
+                      <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200">
                         {selectedSura.name}
                       </h1>
-                      <p className="text-emerald-600 font-semibold">
+                      <p className="text-emerald-600 dark:text-emerald-400 font-semibold">
                         {selectedSura.englishName}
                       </p>
-                      <p className="text-gray-500 text-sm">
+                      <p className="text-gray-500 dark:text-gray-400 text-sm">
                         {selectedSura.englishNameTranslation}
                       </p>
                     </div>
                   </div>
-                  <div className="text-right text-sm text-gray-500">
+                  <div className="text-right text-sm text-gray-500 dark:text-gray-400">
                     <p>{selectedSura.revelationType}</p>
                     <p>{surahData?.length} آيات</p>
                   </div>
                 </div>
 
                 <div className="mb-6">
-                  <h3 className="text-lg font-semibold text-gray-700 mb-3">
+                  <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-1">
                     اختر القارئ:
                   </h3>
                   <ReciterSelector
@@ -592,10 +592,10 @@ function Quran() {
                     />
                   </svg>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-600 mb-2">
+                <h3 className="text-lg font-semibold text-gray-600 dark:text-gray-300 mb-2">
                   اختر سورة للقراءة
                 </h3>
-                <p className="text-sm text-gray-500">
+                <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
                   اضغط على أي سورة من القائمة لعرض آياتها
                 </p>
               </div>

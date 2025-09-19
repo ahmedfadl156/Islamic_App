@@ -41,7 +41,7 @@ export default function BookmarkCard({ bookmark}) {
   }
 
   return (
-    <div className={`group relative bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 overflow-hidden`}>
+    <div className={`group relative bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 dark:border-gray-700 overflow-hidden`}>
       <div className="absolute top-0 right-0 w-20 h-20 opacity-5">
         <svg viewBox="0 0 100 100" className="w-full h-full fill-emerald-600">
           <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" strokeWidth="2"/>
@@ -57,12 +57,12 @@ export default function BookmarkCard({ bookmark}) {
               <FaBook className="text-white text-sm" />
             </div>
             <div>
-              <h3 className="font-bold text-gray-800 text-lg leading-tight">
+              <h3 className="font-bold text-gray-800 text-lg leading-tight dark:text-gray-200">
                 {bookmark.bookmark_name}
               </h3>
               <div className="flex items-center gap-2 mt-1">
                 <MdLocationOn className="text-emerald-600 text-sm" />
-                <span className="text-emerald-600 font-semibold text-sm">
+                <span className="text-emerald-600 font-semibold text-sm dark:text-emerald-200">
                   سورة {bookmark.surah_name} - آية {bookmark.ayah_number_in_surah}
                 </span>
               </div>
@@ -74,13 +74,13 @@ export default function BookmarkCard({ bookmark}) {
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg p-4 mb-4 border-r-4 border-emerald-500">
-          <p className="text-gray-800 text-lg leading-relaxed font-arabic text-right">
+        <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg p-4 mb-4 border-r-4 border-emerald-500 dark:bg-gray-800 dark:border-gray-700">
+          <p className="text-gray-800 text-lg leading-relaxed font-arabic text-right dark:text-black">
             {bookmark.ayah_text}
           </p>
         </div>
 
-        <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
+        <div className="flex items-center justify-between text-sm text-gray-500 mb-4 dark:text-gray-300">
           <span>تم الحفظ في: {formatDate(bookmark.created_at)}</span>
           <div className="h-1 w-12 bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full"></div>
         </div>

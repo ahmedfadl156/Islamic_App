@@ -45,10 +45,10 @@ function StoryPage() {
 
   if (isLoadingStory) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-gray-900 dark:to-slate-900 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-emerald-600 mx-auto mb-4"></div>
-          <p className="text-xl text-emerald-700 font-semibold">جاري تحميل القصة...</p>
+          <p className="text-xl text-emerald-700 dark:text-emerald-400 font-semibold">جاري تحميل القصة...</p>
         </div>
       </div>
     );
@@ -56,10 +56,10 @@ function StoryPage() {
 
   if (error || !story) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-gray-900 dark:to-slate-900 flex items-center justify-center">
         <div className="text-center">
           <div className="text-6xl mb-4">😔</div>
-          <p className="text-xl text-red-600 font-semibold mb-4">عذراً، لم نتمكن من العثور على القصة</p>
+          <p className="text-xl text-red-600 dark:text-red-400 font-semibold mb-4">عذراً، لم نتمكن من العثور على القصة</p>
           <button
             onClick={() => navigate('/stories')}
             className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-lg transition-colors"
@@ -85,7 +85,7 @@ function StoryPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-gray-900 dark:to-slate-900">
       <Navbar />
       
       <div className="relative overflow-hidden bg-gradient-to-br from-emerald-600 via-teal-600 to-cyan-700">
@@ -133,10 +133,10 @@ function StoryPage() {
       </div>
 
       <div className="max-w-4xl mx-auto px-6 py-16">
-        <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl overflow-hidden">
+        <div className="bg-white/80 dark:bg-gray-800/90 backdrop-blur-sm rounded-3xl shadow-2xl overflow-hidden">
           <div className="p-8 md:p-12">
             <div className="prose prose-lg prose-emerald max-w-none">
-              <div className="text-gray-800 leading-relaxed text-lg" style={{ lineHeight: '2', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+              <div className="text-gray-800 dark:text-gray-200 leading-relaxed text-lg" style={{ lineHeight: '2', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
                 {story.content?.split('\n').map((paragraph, index) => (
                   paragraph.trim() && (
                     <p key={index} className="mb-6 text-justify">
@@ -149,7 +149,7 @@ function StoryPage() {
           </div>
 
           {story.lesson && (
-            <div className="bg-gradient-to-r from-emerald-50 to-teal-50 p-8 md:p-12 border-t border-emerald-100">
+            <div className="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 p-8 md:p-12 border-t border-emerald-100 dark:border-emerald-700">
               <div className="flex items-start gap-4 mb-6">
                 <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full flex items-center justify-center">
                   <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -157,8 +157,8 @@ function StoryPage() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-emerald-800 mb-4">العبر والدروس المستفادة</h3>
-                  <div className="text-emerald-700 leading-relaxed">
+                  <h3 className="text-2xl font-bold text-emerald-800 dark:text-emerald-300 mb-4">العبر والدروس المستفادة</h3>
+                  <div className="text-emerald-700 dark:text-emerald-400 leading-relaxed">
                     {story.lesson?.split('\n').map((lesson, index) => (
                       lesson.trim() && (
                         <p key={index} className="mb-3">
@@ -173,7 +173,7 @@ function StoryPage() {
           )}
 
           {story.tafseer && (
-            <div className="bg-gradient-to-r from-cyan-50 to-blue-50 p-8 md:p-12 border-t border-cyan-100">
+            <div className="bg-gradient-to-r from-cyan-50 to-blue-50 dark:from-cyan-900/20 dark:to-blue-900/20 p-8 md:p-12 border-t border-cyan-100 dark:border-cyan-700">
               <div className="flex items-start gap-4 mb-6">
                 <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center">
                   <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -181,8 +181,8 @@ function StoryPage() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-cyan-800 mb-4">التفسير والتحليل</h3>
-                  <div className="text-cyan-700 leading-relaxed">
+                  <h3 className="text-2xl font-bold text-cyan-800 dark:text-cyan-300 mb-4">التفسير والتحليل</h3>
+                  <div className="text-cyan-700 dark:text-cyan-400 leading-relaxed">
                     {story.tafseer?.split('\n').map((tafseer, index) => (
                       tafseer.trim() && (
                         <p key={index} className="mb-3">
@@ -200,7 +200,7 @@ function StoryPage() {
         <div className="flex justify-between items-center mt-12">
           <button
             onClick={() => navigate('/stories')}
-            className="group flex items-center gap-3 bg-white/80 backdrop-blur-sm hover:bg-white text-emerald-700 hover:text-emerald-800 px-6 py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl"
+            className="group flex items-center gap-3 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm hover:bg-white dark:hover:bg-gray-700 text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 px-6 py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl"
           >
             <svg className="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -222,7 +222,7 @@ function StoryPage() {
       <Footer />
       
       {showToast && (
-        <div className="fixed top-6 right-6 bg-emerald-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fade-in">
+        <div className="fixed top-6 right-6 bg-emerald-600 dark:bg-emerald-700 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fade-in">
           <div className="flex items-center gap-2">
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />

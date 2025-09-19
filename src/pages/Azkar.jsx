@@ -38,11 +38,11 @@ function Azkar() {
   }
 
   return (
-    <div className="bg-gradient-to-br from-emerald-50 to-teal-50 min-h-screen">
+    <div className="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-gray-900 dark:to-slate-900 min-h-screen">
       <Navbar />
       <div className="flex flex-col items-center justify-center gap-6 mx-auto max-w-6xl py-20 px-8">
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold">الأذكار</h1>
-        <p className="text-xl font-semibold">أذكار الصباح والمساء وأذكار ما بعد الصلاة</p>
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold dark:text-gray-200">الأذكار</h1>
+        <p className="text-xl font-semibold dark:text-gray-300">أذكار الصباح والمساء وأذكار ما بعد الصلاة</p>
       </div>
       <div className="Azkar-cards grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mx-auto max-w-6xl px-8 pb-20">
         <AzkarCard 

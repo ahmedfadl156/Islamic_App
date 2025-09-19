@@ -4,7 +4,7 @@ import Footer from "../components/Footer"
 
 function AppLayout() {
   return (
-    <main>
+    <main className="dark:bg-gray-800">
       <Navbar />
       <Outlet />
       <Footer />

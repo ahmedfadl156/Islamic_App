@@ -9,12 +9,12 @@ export default function Bookmarks() {
 
   if(isLoading){
     return (
-      <div className="bg-gradient-to-br from-emerald-50 to-teal-50 min-h-screen">
+      <div className="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-gray-900 dark:to-slate-900 min-h-screen">
         <Navbar />
         <div className="flex items-center justify-center py-20">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500 mx-auto mb-4"></div>
-            <p className="text-gray-600 text-lg">جاري تحميل المرجعيات...</p>
+            <p className="text-gray-600 dark:text-gray-400 text-lg">جاري تحميل المرجعيات...</p>
           </div>
         </div>
       </div>
@@ -22,7 +22,7 @@ export default function Bookmarks() {
   }
 
   return (
-    <div className="bg-gradient-to-br from-emerald-50 to-teal-50 min-h-screen">
+    <div className="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-gray-900 dark:to-slate-900 min-h-screen">
       <Navbar />
       
       <div className="flex flex-col items-center justify-center gap-6 mx-auto max-w-6xl py-20 px-8">
@@ -30,11 +30,11 @@ export default function Bookmarks() {
           <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full flex items-center justify-center shadow-lg">
             <FaBookmark className="text-white text-2xl" />
           </div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800 dark:text-gray-200">
             مرجعياتى
           </h1>
         </div>
-        <p className="text-xl font-semibold text-gray-600 text-center max-w-3xl">
+        <p className="text-xl font-semibold text-gray-600 text-center max-w-3xl dark:text-gray-300">
           هنا يمكنك اضافة أى أية من أى سورة توقفت عندها لترجع إليها في أي وقت
         </p>
       </div>
@@ -46,7 +46,7 @@ export default function Bookmarks() {
             <input 
               type="text" 
               placeholder="ابحث فى مرجعياتي (اسم المرجعية، السورة، أو النص)" 
-              className="w-full p-4 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 shadow-sm"
+              className="w-full p-4 pr-12 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 shadow-sm"
             />
           </div>
           <button 
@@ -60,7 +60,7 @@ export default function Bookmarks() {
 
       <div className="mx-auto max-w-6xl px-8 pb-20">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">
             مرجعياتي ({bookmarks.length})
           </h2>
           <div className="h-1 w-20 bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full"></div>
@@ -88,11 +88,11 @@ export default function Bookmarks() {
                         <div className="absolute top-1/2 -right-6 w-4 h-4 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-full opacity-30"></div>
                     </div>
 
-                    <h3 className="text-3xl font-bold text-gray-700 mb-4 text-center">
+                    <h3 className="text-3xl font-bold text-gray-700 mb-4 text-center dark:text-gray-200">
                         لا توجد مرجعيات محفوظة
                     </h3>
                     
-                    <p className="text-lg text-gray-500 text-center max-w-md mb-8 leading-relaxed">
+                    <p className="text-lg text-gray-500 text-center max-w-md mb-8 leading-relaxed dark:text-gray-300">
                         ابدأ رحلتك مع القرآن الكريم واحفظ آياتك المفضلة لتعود إليها في أي وقت
                     </p>
 

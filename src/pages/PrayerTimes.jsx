@@ -153,28 +153,28 @@ function PrayerTimes() {
 
   if (loading) {
     return (
-      <div className="bg-gradient-to-br from-emerald-50 to-teal-50 min-h-screen">
+      <div className="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-gray-900 dark:to-slate-900 min-h-screen">
         <Navbar />
         <div className="flex flex-col items-center justify-center gap-6 mx-auto max-w-6xl py-20 px-8">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold">مواقيت الصلاة</h1>
-          <p className="text-xl font-semibold">جاري تحميل التوقيتات...</p>
+          <p className="text-xl font-semibold dark:text-gray-300">جاري تحميل التوقيتات...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-gradient-to-br from-emerald-50 to-teal-50 min-h-screen">
+    <div className="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-gray-900 dark:to-slate-900 min-h-screen">
       <Navbar />
       <div className="flex flex-col items-center justify-center gap-6 mx-auto max-w-6xl py-20 px-8">
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold">مواقيت الصلاة</h1>
-        <p className="text-xl font-semibold">توقيتات دقيقة للصلاة حسب موقعك الحالى</p>
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold dark:text-gray-200">مواقيت الصلاة</h1>
+        <p className="text-xl font-semibold dark:text-gray-300">توقيتات دقيقة للصلاة حسب موقعك الحالى</p>
       </div>
-      <div className="prayer-times-container bg-white w-full max-w-6xl mx-auto p-8 rounded-lg shadow-lg">
+      <div className="prayer-times-container bg-white dark:bg-gray-800 w-full max-w-6xl mx-auto p-8 rounded-lg shadow-lg">
         <div className="header flex justify-between items-center mb-8">
           <div className="right flex flex-col gap-2">
-            <h1 className="font-bold text-2xl">{data?.date?.hijri?.weekday?.ar || 'غير متاح'}, {data?.date?.gregorian?.date}</h1>
-            <span className="font-semibold text-xl text-gray-600">{data?.meta?.timezone}</span>
+            <h1 className="font-bold text-2xl dark:text-gray-200">{data?.date?.hijri?.weekday?.ar || 'غير متاح'}, {data?.date?.gregorian?.date}</h1>
+            <span className="font-semibold text-xl text-gray-600 dark:text-gray-400">{data?.meta?.timezone}</span>
           </div>
           <div className="left flex items-center gap-2">
             <button onClick={handleGetLocation} className="bg-[#059669] hover:bg-emerald-700 text-white px-4 py-3 rounded-lg font-semibold flex items-center gap-2 transition-colors">
@@ -187,98 +187,98 @@ function PrayerTimes() {
         {/* Prayer Times Grid */}
         <div className="prayer-times-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* الفجر */}
-          <div className="prayer-card bg-gradient-to-br from-blue-50 to-indigo-100 p-6 rounded-xl border border-blue-200 hover:shadow-lg transition-shadow">
+          <div className="prayer-card bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/30 p-6 rounded-xl border border-blue-200 dark:border-blue-700 hover:shadow-lg transition-shadow">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-2xl font-bold text-blue-800 mb-1">الفجر</h3>
-                <p className="text-blue-600 text-sm">Fajr</p>
+                <h3 className="text-2xl font-bold text-blue-800 dark:text-blue-300 mb-1">الفجر</h3>
+                <p className="text-blue-600 dark:text-blue-400 text-sm">Fajr</p>
               </div>
               <div className="text-right">
-                <p className="text-3xl font-bold text-blue-900">{convertTo12Hour(data?.timings?.Fajr)}</p>
+                <p className="text-3xl font-bold text-blue-900 dark:text-blue-200">{convertTo12Hour(data?.timings?.Fajr)}</p>
               </div>
             </div>
           </div>
 
           {/* الشروق */}
-          <div className="prayer-card bg-gradient-to-br from-yellow-50 to-orange-100 p-6 rounded-xl border border-yellow-200 hover:shadow-lg transition-shadow">
+          <div className="prayer-card bg-gradient-to-br from-yellow-50 to-orange-100 dark:from-yellow-900/30 dark:to-orange-900/30 p-6 rounded-xl border border-yellow-200 dark:border-yellow-700 hover:shadow-lg transition-shadow">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-2xl font-bold text-orange-800 mb-1">الشروق</h3>
-                <p className="text-orange-600 text-sm">Sunrise</p>
+                <h3 className="text-2xl font-bold text-orange-800 dark:text-orange-300 mb-1">الشروق</h3>
+                <p className="text-orange-600 dark:text-orange-400 text-sm">Sunrise</p>
               </div>
               <div className="text-right">
-                <p className="text-3xl font-bold text-orange-900">{convertTo12Hour(data?.timings?.Sunrise)}</p>
+                <p className="text-3xl font-bold text-orange-900 dark:text-orange-200">{convertTo12Hour(data?.timings?.Sunrise)}</p>
               </div>
             </div>
           </div>
 
           {/* الظهر */}
-          <div className="prayer-card bg-gradient-to-br from-emerald-50 to-green-100 p-6 rounded-xl border border-emerald-200 hover:shadow-lg transition-shadow">
+          <div className="prayer-card bg-gradient-to-br from-emerald-50 to-green-100 dark:from-emerald-900/30 dark:to-green-900/30 p-6 rounded-xl border border-emerald-200 dark:border-emerald-700 hover:shadow-lg transition-shadow">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-2xl font-bold text-emerald-800 mb-1">الظهر</h3>
-                <p className="text-emerald-600 text-sm">Dhuhr</p>
+                <h3 className="text-2xl font-bold text-emerald-800 dark:text-emerald-300 mb-1">الظهر</h3>
+                <p className="text-emerald-600 dark:text-emerald-400 text-sm">Dhuhr</p>
               </div>
               <div className="text-right">
-                <p className="text-3xl font-bold text-emerald-900">{convertTo12Hour(data?.timings?.Dhuhr)}</p>
+                <p className="text-3xl font-bold text-emerald-900 dark:text-emerald-200">{convertTo12Hour(data?.timings?.Dhuhr)}</p>
               </div>
             </div>
           </div>
 
           {/* العصر */}
-          <div className="prayer-card bg-gradient-to-br from-amber-50 to-yellow-100 p-6 rounded-xl border border-amber-200 hover:shadow-lg transition-shadow">
+          <div className="prayer-card bg-gradient-to-br from-amber-50 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30 p-6 rounded-xl border border-amber-200 dark:border-amber-700 hover:shadow-lg transition-shadow">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-2xl font-bold text-amber-800 mb-1">العصر</h3>
-                <p className="text-amber-600 text-sm">Asr</p>
+                <h3 className="text-2xl font-bold text-amber-800 dark:text-amber-300 mb-1">العصر</h3>
+                <p className="text-amber-600 dark:text-amber-400 text-sm">Asr</p>
               </div>
               <div className="text-right">
-                <p className="text-3xl font-bold text-amber-900">{convertTo12Hour(data?.timings?.Asr)}</p>
+                <p className="text-3xl font-bold text-amber-900 dark:text-amber-200">{convertTo12Hour(data?.timings?.Asr)}</p>
               </div>
             </div>
           </div>
 
           {/* المغرب */}
-          <div className="prayer-card bg-gradient-to-br from-rose-50 to-pink-100 p-6 rounded-xl border border-rose-200 hover:shadow-lg transition-shadow">
+          <div className="prayer-card bg-gradient-to-br from-rose-50 to-pink-100 dark:from-rose-900/30 dark:to-pink-900/30 p-6 rounded-xl border border-rose-200 dark:border-rose-700 hover:shadow-lg transition-shadow">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-2xl font-bold text-rose-800 mb-1">المغرب</h3>
-                <p className="text-rose-600 text-sm">Maghrib</p>
+                <h3 className="text-2xl font-bold text-rose-800 dark:text-rose-300 mb-1">المغرب</h3>
+                <p className="text-rose-600 dark:text-rose-400 text-sm">Maghrib</p>
               </div>
               <div className="text-right">
-                <p className="text-3xl font-bold text-rose-900">{convertTo12Hour(data?.timings?.Maghrib)}</p>
+                <p className="text-3xl font-bold text-rose-900 dark:text-rose-200">{convertTo12Hour(data?.timings?.Maghrib)}</p>
               </div>
             </div>
           </div>
 
           {/* العشاء */}
-          <div className="prayer-card bg-gradient-to-br from-purple-50 to-violet-100 p-6 rounded-xl border border-purple-200 hover:shadow-lg transition-shadow">
+          <div className="prayer-card bg-gradient-to-br from-purple-50 to-violet-100 dark:from-purple-900/30 dark:to-violet-900/30 p-6 rounded-xl border border-purple-200 dark:border-purple-700 hover:shadow-lg transition-shadow">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-2xl font-bold text-purple-800 mb-1">العشاء</h3>
-                <p className="text-purple-600 text-sm">Isha</p>
+                <h3 className="text-2xl font-bold text-purple-800 dark:text-purple-300 mb-1">العشاء</h3>
+                <p className="text-purple-600 dark:text-purple-400 text-sm">Isha</p>
               </div>
               <div className="text-right">
-                <p className="text-3xl font-bold text-purple-900">{convertTo12Hour(data?.timings?.Isha)}</p>
+                <p className="text-3xl font-bold text-purple-900 dark:text-purple-200">{convertTo12Hour(data?.timings?.Isha)}</p>
               </div>
             </div>
           </div>
         </div>
 
         {/* معلومات اضافية */}
-        <div className="additional-info mt-8 pt-6 border-t border-gray-200">
+        <div className="additional-info mt-8 pt-6 border-t border-gray-200 dark:border-gray-600">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
             <div className="info-item">
-              <h4 className="font-semibold text-gray-700 mb-1">التاريخ الهجري</h4>
-              <p className="text-gray-600">{data?.date?.hijri?.date || 'غير متاح'}</p>
+              <h4 className="font-semibold text-gray-700 dark:text-gray-300 mb-1">التاريخ الهجري</h4>
+              <p className="text-gray-600 dark:text-gray-400">{data?.date?.hijri?.date || 'غير متاح'}</p>
             </div>
             <div className="info-item">
-              <h4 className="font-semibold text-gray-700 mb-1">الطريقة المستخدمة</h4>
-              <p className="text-gray-600">{data?.meta?.method?.name || 'غير متاح'}</p>
+              <h4 className="font-semibold text-gray-700 dark:text-gray-300 mb-1">الطريقة المستخدمة</h4>
+              <p className="text-gray-600 dark:text-gray-400">{data?.meta?.method?.name || 'غير متاح'}</p>
             </div>
             <div className="info-item">
-              <h4 className="font-semibold text-gray-700 mb-1">المدينة</h4>
-              <p className="text-gray-600">
+              <h4 className="font-semibold text-gray-700 dark:text-gray-300 mb-1">المدينة</h4>
+              <p className="text-gray-600 dark:text-gray-400">
                 {cityInfo ? 
                   `${cityInfo.city}, ${cityInfo.country}` : 
                   'القاهرة، مصر'

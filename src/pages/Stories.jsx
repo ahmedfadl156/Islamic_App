@@ -57,7 +57,7 @@ function Stories() {
 
   if (isLoadingStories) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50">
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-gray-900 dark:to-slate-900">
         <Navbar />
         <div className="flex items-center justify-center min-h-[80vh]">
           <div className="text-center">
@@ -69,8 +69,8 @@ function Stories() {
                 </svg>
               </div>
             </div>
-            <h2 className="text-2xl font-bold text-emerald-800 mb-2">جاري تحميل القصص</h2>
-            <p className="text-emerald-600">يرجى الانتظار قليلاً...</p>
+            <h2 className="text-2xl font-bold text-emerald-800 dark:text-emerald-400 mb-2">جاري تحميل القصص</h2>
+            <p className="text-emerald-600 dark:text-emerald-400">يرجى الانتظار قليلاً...</p>
             <div className="flex justify-center mt-4">
               <div className="flex space-x-1">
                 <div className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce"></div>
@@ -85,13 +85,13 @@ function Stories() {
   }
 
   return (
-    <div className="bg-gradient-to-br from-emerald-50 to-teal-50 min-h-screen">
+    <div className="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-gray-900 dark:to-slate-900 min-h-screen">
       <Navbar />
       <div className="flex flex-col items-center justify-center gap-6 mx-auto max-w-6xl py-20 px-8">
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold dark:text-gray-200">
           قصص و عبر يومية
         </h1>
-        <p className="text-xl font-semibold text-gray-500">
+        <p className="text-xl font-semibold text-gray-500 dark:text-gray-400">
           استمتع بقراءة قصص من حياة الأنبياء وعبر يومية
         </p>
       </div>
