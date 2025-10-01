@@ -5,7 +5,7 @@ import { getQuran, getSurah, getTafsir } from "../services/getQuran";
 import Card from "../components/Card";
 import ReciterSelector from "../components/ReciterSelector";
 import { IoMdPlay, IoMdPause } from "react-icons/io";
-import { IoStop } from "react-icons/io5";
+import { IoStop, IoPlaySkipForward, IoPlaySkipBack } from "react-icons/io5";
 import { FaBook } from "react-icons/fa";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import SkeletonLoader from "../components/SkeletonLoader";
@@ -212,6 +212,34 @@ function Quran() {
     setIsPlayingFull(false);
     setCurrentTime(0);
     setDuration(0);
+  };
+
+  const skipForward = () => {
+    if (!audio) return;
+    audio.currentTime = Math.min(audio.currentTime + 10, audio.duration);
+  };
+
+  const skipBackward = () => {
+    if (!audio) return;
+    audio.currentTime = Math.max(audio.currentTime - 10, 0);
+  };
+
+  const handleProgressBarClick = (e) => {
+    if (!audio || !duration) return;
+    
+    const progressBar = e.currentTarget;
+    const clickPosition = e.nativeEvent.offsetX;
+    const progressBarWidth = progressBar.offsetWidth;
+    const clickPercentage = clickPosition / progressBarWidth;
+    
+    audio.currentTime = clickPercentage * duration;
+  };
+
+  const formatTime = (seconds) => {
+    if (!seconds || isNaN(seconds)) return "00:00";
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
   async function handleTafsirClick(ayahNumber) {
@@ -467,7 +495,7 @@ function Quran() {
                   )}
                 </div>
 
-                <div className="flex justify-center mb-4">
+                <div className="flex flex-col items-center mb-4">
                   <button
                     onClick={playFullSurah}
                     disabled={isLoadingAudio}
@@ -559,6 +587,75 @@ function Quran() {
                       ></div>
                     </div>
                   </button>
+
+                  {/* عناصر التحكم في الصوت */}
+                  {audio && (
+                    <div className="mt-4 space-y-3">
+                      {/* شريط التقدم */}
+                      <div className="flex items-center gap-3 text-white text-sm">
+                        <span className="font-mono text-xs opacity-80">{formatTime(currentTime)}</span>
+                        <div 
+                          className="flex-1 h-2 bg-white bg-opacity-20 rounded-full cursor-pointer overflow-hidden group hover:h-3 transition-all duration-200"
+                          onClick={handleProgressBarClick}
+                        >
+                          <div 
+                            className="h-full bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full transition-all duration-100 relative group-hover:shadow-lg group-hover:shadow-emerald-500/50"
+                            style={{ width: `${duration ? (currentTime / duration) * 100 : 0}%` }}
+                          >
+                            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                          </div>
+                        </div>
+                        <span className="font-mono text-xs opacity-80">{formatTime(duration)}</span>
+                      </div>
+
+                      {/* أزرار التحكم */}
+                      <div className="flex items-center justify-center gap-2">
+                        {/* زر التقديم للخلف */}
+                        <button
+                          onClick={skipBackward}
+                          className="group relative w-10 h-10 bg-white/10 hover:bg-opacity-20 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
+                          title="رجوع 10 ثواني"
+                        >
+                          <IoPlaySkipBack className="w-5 h-5 text-white group-hover:text-emerald-300 transition-colors" />
+                          <span className="absolute -bottom-1 right-1/2 translate-x-1/2 text-[10px] font-bold text-white opacity-70">10</span>
+                        </button>
+
+                        {/* زر التشغيل/الإيقاف */}
+                        <button
+                          onClick={togglePlayPause}
+                          className="group relative w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-emerald-500/50"
+                          title={isPlayingFull ? "إيقاف مؤقت" : "تشغيل"}
+                        >
+                          {isPlayingFull ? (
+                            <IoMdPause className="w-7 h-7 text-white" />
+                          ) : (
+                            <IoMdPlay className="w-7 h-7 text-white mr-1" />
+                          )}
+                          <div className="absolute inset-0 rounded-full bg-white opacity-0 group-hover:opacity-20 transition-opacity"></div>
+                        </button>
+
+                        {/* زر التقديم للأمام */}
+                        <button
+                          onClick={skipForward}
+                          className="group relative w-10 h-10 bg-white/10 hover:bg-opacity-20 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
+                          title="تقديم 10 ثواني"
+                        >
+                          <IoPlaySkipForward className="w-5 h-5 text-white group-hover:text-emerald-300 transition-colors" />
+                          <span className="absolute -bottom-1 right-1/2 translate-x-1/2 text-[10px] font-bold text-white opacity-70">10</span>
+                        </button>
+
+                        {/* زر الإيقاف التام */}
+                        <button
+                          onClick={stopAudio}
+                          className="group w-10 h-10 bg-white/10 hover:bg-red-500 hover:bg-opacity-90 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
+                          title="إيقاف"
+                        >
+                          <IoStop className="w-5 h-5 text-white" />
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                  
                 </div>
               </div>
 
