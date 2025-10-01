@@ -10,7 +10,6 @@ export default function AccountInfo() {
     const [error, setError] = useState(null)
     const {update, isUpdating} = useUpdate();
 
-
     function handleUpdate(){
         if (!user || !user.user) {
             toast.error('لا توجد بيانات مستخدم للتحديث');

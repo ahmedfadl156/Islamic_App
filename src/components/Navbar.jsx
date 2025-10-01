@@ -7,6 +7,7 @@ import { BsFillBookmarkHeartFill } from "react-icons/bs";
 import { useUser } from "../services/useUser";
 import { useLogout } from "../services/useLogout";
 import ToggleButton from "./ToggleButton";
+import { GrPlan } from "react-icons/gr";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ function Navbar() {
     { path: "/azkar", icon: LuBookOpenText, label: "الأذكار" },
     { path: "/stories", icon: SiStorybook, label: "القصص" },
     { path: "/bookmarks", icon: BsFillBookmarkHeartFill, label: "مرجعياتي" },
+    { path: "/planner", icon: GrPlan, label: "مهامى" },
   ];
 
   const isActive = (path) => location.pathname === path;
