@@ -21,7 +21,7 @@ function Navbar() {
     { path: "/", icon: HiOutlineHome, label: "الرئيسية" },
     { path: "/prayer-times", icon: HiOutlineCalendar, label: "مواقيت الصلاة" },
     { path: "/quran", icon: HiBookOpen, label: "القرآن" },
-    { path: "/azkar", icon: LuBookOpenText, label: "الأذكار" },
+    { path: "/azkar", icon: LuBookOpenText, label: "الأذكار و التسبيح" },
     { path: "/stories", icon: SiStorybook, label: "القصص" },
     { path: "/bookmarks", icon: BsFillBookmarkHeartFill, label: "مرجعياتي" },
     { path: "/planner", icon: GrPlan, label: "مهامى" },
