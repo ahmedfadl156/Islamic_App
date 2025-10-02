@@ -16,6 +16,7 @@ import Confirm from "./pages/Confirm";
 import AccountInfo from "./pages/AccountInfo";
 import PageNotFound from "./pages/PageNotFound";
 import Planner from "./pages/Planner";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -41,10 +42,10 @@ function App() {
       <Route path="/story/:id" element={<StoryPage />}/>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/bookmarks" element={<Bookmarks />} />
+      <Route path="/bookmarks" element={<ProtectedRoute><Bookmarks /></ProtectedRoute>} />
       <Route path="/confirm" element={<Confirm />} />
       <Route path="/account-info" element={<AccountInfo />} />
-      <Route path="/planner" element={<Planner />} />
+      <Route path="/planner" element={<ProtectedRoute><Planner /></ProtectedRoute>} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
     </BrowserRouter>

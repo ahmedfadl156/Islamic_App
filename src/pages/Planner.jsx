@@ -264,7 +264,7 @@ export default function Planner() {
               <span className="text-emerald-600"><IoCheckmarkDoneCircle /></span>
               <div className="flex flex-col">
                 <span className="text-sm text-gray-700 dark:text-gray-300">المكتملة</span>
-                <span className="font-bold text-emerald-700 dark:text-emerald-300">{isAllTasksCompleted ? "لقد اكتملت جميع المهام" : `${completedCount} من ${tasks?.length}`}</span>
+                <span className="font-bold text-emerald-700 dark:text-emerald-300">{profileLoading ? '...' : isAllTasksCompleted ? "لقد اكتملت جميع المهام" : `${completedCount || 0} من ${tasks?.length || 0}`}</span>
               </div>
               <div className="w-24 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                 <div className="h-full bg-emerald-500" style={{ width: `${completionPercent}%` }}></div>
