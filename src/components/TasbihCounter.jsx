@@ -57,8 +57,8 @@ const TasbihCounter = () => {
   const handleCount = () => {
     setIsAnimating(true)
     setShowRipple(true)
-    setCount(prev => prev + 1)
-    setTotalCount(prev => prev + 1)
+    setCount(prev => prev < currentTasbih.target ? prev + 1 : prev)
+    setTotalCount(prev => prev < currentTasbih.target ? prev + 1 : prev)
     
     // Reset animation after a short delay
     setTimeout(() => {
@@ -92,7 +92,7 @@ const TasbihCounter = () => {
 
       {/* Tasbih Selection */}
       <div className="mb-8">
-        <div className="grid grid-cols-3 gap-2 mb-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mb-4">
           {tasbihTypes.map((tasbih, index) => (
             <button
               key={index}
@@ -108,7 +108,7 @@ const TasbihCounter = () => {
             >
               <div className="flex items-center justify-center gap-1">
                 <span>{tasbih.icon}</span>
-                <span className="text-xs">{tasbih.translation}</span>
+                <span className="text-sm md:text-md lg:text-lg">{tasbih.translation}</span>
               </div>
             </button>
           ))}
@@ -193,7 +193,7 @@ const TasbihCounter = () => {
       </div>
 
       {/* Control Buttons */}
-      <div className="flex gap-3 justify-center">
+      <div className="flex flex-col md:flex-row gap-3 justify-center">
         <button
           onClick={resetCount}
           className="px-6 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-xl font-semibold transition-colors duration-200"
