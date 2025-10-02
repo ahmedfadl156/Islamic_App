@@ -126,7 +126,6 @@ export async function deleteTask(task_id){
         throw new Error("يجب عليك تسجيل الدخول لحذف المهام");
     }
 
-    // أولاً: حذف جميع completions الخاصة بهذه المهمة
     const {error: completionError} = await supabase
         .from("task_compeletion")
         .delete()

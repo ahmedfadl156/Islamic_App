@@ -3,12 +3,14 @@ import { Link } from 'react-router-dom'
 import supabase  from '../services/supabase'
 import { useUpdate } from '../services/useUpdate'
 import toast from 'react-hot-toast'
+import { useProfile } from '../services/useProfile'
 
 export default function AccountInfo() {
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const {update, isUpdating} = useUpdate();
+    const {profile , isLoading , error: profileError} = useProfile();
 
     function handleUpdate(){
         if (!user || !user.user) {
@@ -303,9 +305,9 @@ export default function AccountInfo() {
                 </div>
                 <div className="text-center p-4 bg-blue-50 rounded-lg">
                   <div className="text-2xl font-bold text-blue-600 mb-1">
-                    {user.user.identities?.length || 0}
+                    {profile?.longest_streak || 0} أيام
                   </div>
-                  <div className="text-sm text-blue-700">طريقة تسجيل الدخول</div>
+                  <div className="text-sm text-blue-700">أطول فترة استريك</div>
                 </div>
                 <div className="text-center p-4 bg-purple-50 rounded-lg">
                   <div className="text-2xl font-bold text-purple-600 mb-1">

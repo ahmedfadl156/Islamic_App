@@ -142,7 +142,8 @@ export default function Planner() {
         streak: newStreak, 
         level: newLevel, 
         points: newPoints,
-        last_activity_date: isCompleting ? today : profile?.last_activity_date
+        last_activity_date: isCompleting ? today : profile?.last_activity_date,
+        longest_streak: profile?.longest_streak || 0
       });
     }
 
@@ -207,7 +208,8 @@ export default function Planner() {
                     streak: 0,
                     level: profile.level,
                     points: profile.points,
-                    last_activity_date: profile.last_activity_date
+                    last_activity_date: profile.last_activity_date,
+                    longest_streak: profile.longest_streak || 0
                 });
             }
         }
