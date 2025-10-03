@@ -58,7 +58,7 @@ const TasbihCounter = () => {
     setIsAnimating(true)
     setShowRipple(true)
     setCount(prev => prev < currentTasbih.target ? prev + 1 : prev)
-    setTotalCount(prev => prev < currentTasbih.target ? prev + 1 : prev)
+    setTotalCount(prev => prev + 1)
     
     // Reset animation after a short delay
     setTimeout(() => {

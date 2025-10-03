@@ -30,6 +30,7 @@ export default function Planner() {
       { id: 2, title: "ورد القرآن (١ صفحة على الأقل)", reward: 20, done: false },
       { id: 3, title: "أذكار الصباح والمساء", reward: 15, done: false },
       { id: 4, title: "الصدقة اليومية ولو باليسير", reward: 30, done: false },
+      { id: 5, title: "صلاة الخمس صلوات فى وقتها" , reward: 30 , done: false}
     ];
 
     // جلب البروفايل الخاص باليوز مثل الاستريك والنقاط وهكذا
